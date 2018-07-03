@@ -3,4 +3,6 @@
     <string name="action_delete_all_entries">Delete All Items</string>
     <string name="empty_view_title_text">It\'s a bit lonely here...</string>
     <string name="empty_view_subtitle_text">Get started by adding an item</string>
+    <string name="editor_activity_title_new_pet">Add an item</string>
+    <string name="action_delete_entry">Delete item</string>
 </resources>
