@@ -12,17 +12,18 @@
         <activity
             android:name=".MainActivity"
             android:theme="@style/noTitle">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
-            android:name=".CatalogActivity">
+            android:name=".CatalogActivity"
+            android:theme="@style/AppTheme">
 
         </activity>
+        <activity android:name=".EditorActivity"></activity>
     </application>
 
 </manifest>
