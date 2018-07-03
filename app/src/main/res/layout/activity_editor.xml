@@ -1,9 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EditorActivity">
+    tools:context=".EditorActivity"
+    android:orientation="vertical"
+    android:padding="@dimen/activity_margin">
 
-</android.support.constraint.ConstraintLayout>
+
+    <!-- Overview category -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <!-- Label -->
+        <TextView
+            style="@style/CategoryStyle"
+            android:text="@string/category_overview"/>
+
+        <!-- Input fields -->
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:paddingLeft="4dp"
+            android:orientation="vertical">
+
+            <!-- Name field -->
+            <EditText
+                android:id="@+id/edit_item_name"
+                style="@style/EditorFieldStyle"
+                android:hint="@string/hint_item_name"
+                android:inputType="textCapWords"/>
+
+            <!-- Quantity field -->
+            <EditText
+                android:id="@+id/edit_item_quantity"
+                style="@style/EditorFieldStyle"
+                android:hint="@string/hint_item_quantity"
+                android:inputType="number"/>
+
+            <!-- Price field -->
+            <EditText
+                android:id="@+id/edit_item_price"
+                style="@style/EditorFieldStyle"
+                android:hint="@string/hint_item_price"
+                android:inputType="number"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="32dp">
+
+        <!-- Label -->
+        <TextView
+            style="@style/CategoryStyle"
+            android:text="@string/category_description"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:paddingLeft="4dp"
+            android:orientation="vertical">
+
+            <!-- Description field -->
+            <EditText
+                android:id="@+id/edit_item_description"
+                style="@style/EditorFieldStyle"
+                android:hint="@string/hint_item_description"
+                android:inputType="textCapWords"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!--&lt;!&ndash; Gender category &ndash;&gt;-->
+    <!--<LinearLayout-->
+        <!--android:id="@+id/container_gender"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="horizontal">-->
+
+        <!--&lt;!&ndash; Label &ndash;&gt;-->
+        <!--<TextView-->
+            <!--android:text="@string/category_gender"-->
+            <!--style="@style/CategoryStyle" />-->
+
+        <!--&lt;!&ndash; Input field &ndash;&gt;-->
+        <!--<LinearLayout-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_weight="2"-->
+            <!--android:orientation="vertical">-->
+
+            <!--&lt;!&ndash; Gender drop-down spinner &ndash;&gt;-->
+            <!--<Spinner-->
+                <!--android:id="@+id/spinner_gender"-->
+                <!--android:layout_height="48dp"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:paddingRight="16dp"-->
+                <!--android:spinnerMode="dropdown"/>-->
+        <!--</LinearLayout>-->
+    <!--</LinearLayout>-->
+
+    <!--&lt;!&ndash; Measurement category &ndash;&gt;-->
+    <!--<LinearLayout-->
+        <!--android:id="@+id/container_measurement"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="horizontal">-->
+
+        <!--&lt;!&ndash; Label &ndash;&gt;-->
+        <!--<TextView-->
+            <!--android:text="@string/category_measurement"-->
+            <!--style="@style/CategoryStyle" />-->
+
+        <!--&lt;!&ndash; Input fields &ndash;&gt;-->
+        <!--<RelativeLayout-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_weight="2"-->
+            <!--android:paddingLeft="4dp">-->
+
+            <!--&lt;!&ndash; Weight field &ndash;&gt;-->
+            <!--<EditText-->
+                <!--android:id="@+id/edit_pet_weight"-->
+                <!--android:hint="@string/hint_pet_weight"-->
+                <!--android:inputType="number"-->
+                <!--style="@style/EditorFieldStyle" />-->
+
+            <!--&lt;!&ndash; Units for weight (kg) &ndash;&gt;-->
+            <!--<TextView-->
+                <!--android:id="@+id/label_weight_units"-->
+                <!--android:text="@string/unit_pet_weight"-->
+                <!--style="@style/EditorUnitsStyle"/>-->
+        <!--</RelativeLayout>-->
+    <!--</LinearLayout>-->
+
+
+</LinearLayout>

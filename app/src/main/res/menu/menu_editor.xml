@@ -10,4 +10,10 @@
         android:title="@string/action_delete_entry"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/action_save"
+        android:title="@string/action_save"
+        android:icon="@drawable/ic_done"
+        app:showAsAction="always" />
+
 </menu>

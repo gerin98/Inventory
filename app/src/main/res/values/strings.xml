@@ -5,4 +5,11 @@
     <string name="empty_view_subtitle_text">Get started by adding an item</string>
     <string name="editor_activity_title_new_pet">Add an item</string>
     <string name="action_delete_entry">Delete item</string>
+    <string name="category_overview">Overview</string>
+    <string name="hint_item_name">Name</string>
+    <string name="hint_item_quantity">Quantity</string>
+    <string name="action_save">Save</string>
+    <string name="hint_item_price">Price</string>
+    <string name="category_description">Description</string>
+    <string name="hint_item_description">Describe the product</string>
 </resources>

@@ -35,6 +35,8 @@ public class EditorActivity extends AppCompatActivity {
         // User clicked on a menu option in the app bar overflow menu
         switch (item.getItemId()) {
             // Respond to a click on the "Delete entry" menu option
+            case R.id.action_save:
+                return true;
             case R.id.action_delete_entry:
                 return true;
             case android.R.id.home:
