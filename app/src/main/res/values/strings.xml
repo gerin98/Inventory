@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">Inventory</string>
     <string name="action_delete_all_entries">Delete All Items</string>
+    <string name="empty_view_title_text">It\'s a bit lonely here...</string>
+    <string name="empty_view_subtitle_text">Get started by adding an item</string>
 </resources>
