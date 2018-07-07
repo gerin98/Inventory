@@ -7,61 +7,70 @@
     android:layout_height="match_parent"
     tools:context=".CatalogActivity">
 
-    <ListView
-        android:id="@+id/catalog_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </ListView>
-
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/catalog_fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_margin="@dimen/fab_margin"
-        android:clickable="true"
-        android:tint="@color/white"
-        app:srcCompat="@android:drawable/ic_input_add" />
-
-    <!-- Empty view for the list -->
+    <!-- This layout contains all the views -->
     <RelativeLayout
-        android:id="@+id/empty_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/empty_shelf"
+        <!-- Listview shows all available items -->
+        <ListView
+            android:id="@+id/catalog_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></ListView>
+
+        <!-- Empty view for the list -->
+        <RelativeLayout
+            android:id="@+id/empty_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/empty_shelf"/>
+            android:layout_centerInParent="true">
 
-        <TextView
-            android:id="@+id/empty_title_text"
+            <ImageView
+                android:id="@+id/empty_shelf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/empty_shelf" />
+
+            <TextView
+                android:id="@+id/empty_title_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/empty_shelf"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="sans-serif-medium"
+                android:paddingTop="16dp"
+                android:text="@string/empty_view_title_text"
+                android:textAppearance="?android:textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/empty_subtitle_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/empty_title_text"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="sans-serif"
+                android:paddingTop="8dp"
+                android:text="@string/empty_view_subtitle_text"
+                android:textAppearance="?android:textAppearanceSmall"
+                android:textColor="#A2AAB0" />
+        </RelativeLayout>
+
+        <!-- FAB -->
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/catalog_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/empty_shelf"
-            android:layout_centerHorizontal="true"
-            android:fontFamily="sans-serif-medium"
-            android:paddingTop="16dp"
-            android:text="@string/empty_view_title_text"
-            android:textAppearance="?android:textAppearanceMedium"/>
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_margin="@dimen/fab_margin"
+            android:clickable="true"
+            android:tint="@color/white"
+            app:layout_anchor="@id/app_bar_layout"
+            app:layout_anchorGravity="bottom|right|end"
+            app:srcCompat="@android:drawable/ic_input_add" />
 
-        <TextView
-            android:id="@+id/empty_subtitle_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/empty_title_text"
-            android:layout_centerHorizontal="true"
-            android:fontFamily="sans-serif"
-            android:paddingTop="8dp"
-            android:text="@string/empty_view_subtitle_text"
-            android:textAppearance="?android:textAppearanceSmall"
-            android:textColor="#A2AAB0"/>
     </RelativeLayout>
 
 </RelativeLayout>

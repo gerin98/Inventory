@@ -43,16 +43,33 @@
                 android:hint="@string/hint_item_quantity"
                 android:inputType="number"/>
 
-            <!-- Price field -->
-            <EditText
-                android:id="@+id/edit_item_price"
-                style="@style/EditorFieldStyle"
-                android:hint="@string/hint_item_price"
-                android:inputType="number"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="10"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dollarSign"/>
+
+                <!-- Price field -->
+                <EditText
+                    android:id="@+id/edit_item_price"
+                    style="@style/EditorFieldStylePrice"
+                    android:hint="@string/hint_item_price"
+                    android:inputType="number"/>
+
+            </LinearLayout>
+
+
         </LinearLayout>
 
     </LinearLayout>
 
+    <!-- Description category -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -77,6 +94,49 @@
                 style="@style/EditorFieldStyle"
                 android:hint="@string/hint_item_description"
                 android:inputType="textCapWords"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Tags layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="32dp">
+
+        <!-- Label -->
+        <TextView
+            style="@style/CategoryStyle"
+            android:text="@string/category_tag"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:paddingLeft="4dp"
+            android:orientation="vertical">
+
+            <!-- Tag field -->
+            <EditText
+                android:id="@+id/edit_item_tag1"
+                style="@style/EditorFieldStyle"
+                android:hint="@string/hint_item_tag1"
+                android:inputType="textCapWords"/>
+
+            <EditText
+                android:id="@+id/edit_item_tag2"
+                style="@style/EditorFieldStyle"
+                android:hint="@string/hint_item_tag2"
+                android:inputType="textCapWords"/>
+
+            <EditText
+                android:id="@+id/edit_item_tag3"
+                style="@style/EditorFieldStyle"
+                android:hint="@string/hint_item_tag3"
+                android:inputType="textCapWords"/>
+
 
         </LinearLayout>
 

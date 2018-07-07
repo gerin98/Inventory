@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 Intent catalogIntent = new Intent(MainActivity.this, CatalogActivity.class);
                 startActivity(catalogIntent);
+                finish();
             }
         }, SPLASH_TIME_OUT);
 

@@ -12,4 +12,9 @@
     <string name="hint_item_price">Price</string>
     <string name="category_description">Description</string>
     <string name="hint_item_description">Describe the product</string>
+    <string name="dollarSign">$</string>
+    <string name="hint_item_tag1">Tag1</string>
+    <string name="hint_item_tag2">Tag2</string>
+    <string name="hint_item_tag3">Tag3</string>
+    <string name="category_tag">Tags</string>
 </resources>
