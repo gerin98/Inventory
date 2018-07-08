@@ -24,7 +24,12 @@
         <activity
             android:name=".EditorActivity"
             android:parentActivityName=".CatalogActivity"></activity>
-        <activity android:name=".ItemActivity"></activity>
+        <activity
+            android:name=".ItemActivity"></activity>
+        <provider
+            android:authorities="com.example.gerin.inventory"
+            android:name=".data.ItemProvider"
+            android:exported="false"/>
     </application>
 
 </manifest>
