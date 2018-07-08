@@ -32,12 +32,12 @@ public class ItemCursorAdapter extends CursorAdapter {
         TextView quantityTextView = (TextView) view.findViewById(R.id.quantity);
         TextView priceTextView = (TextView) view.findViewById(R.id.price);
 
-        // Find the columns of pet attributes that we're interested in
+        // Find the columns of item attributes that we're interested in
         int nameColumnIndex = cursor.getColumnIndex(ItemContract.ItemEntry.COLUMN_ITEM_NAME);
         int quantityColumnIndex = cursor.getColumnIndex(ItemContract.ItemEntry.COLUMN_ITEM_QUANTITY);
         int priceColumnIndex = cursor.getColumnIndex(ItemContract.ItemEntry.COLUMN_ITEM_PRICE);
 
-        // Read the pet attributes from the Cursor for the current pet
+        // Read the item attributes from the Cursor for the current item
         String itemName = cursor.getString(nameColumnIndex);
         String itemQuantity = String.valueOf(cursor.getInt(quantityColumnIndex));
         DecimalFormat formatter = new DecimalFormat("#0.00");

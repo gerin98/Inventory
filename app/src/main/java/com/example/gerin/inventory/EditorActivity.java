@@ -29,7 +29,7 @@ import java.text.DecimalFormat;
 public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     /**
-     * Identifier for the pet data loader
+     * Identifier for the item data loader
      */
     private static final int EXISTING_ITEM_LOADER = 0;
 

@@ -138,7 +138,7 @@ public class ItemProvider extends ContentProvider{
         }
 
         // TODO: 2018-07-07 set all listeners to notify database change 
-//        // Notify all listeners that the data has changed for the pet content URI
+//        // Notify all listeners that the data has changed for the item content URI
         getContext().getContentResolver().notifyChange(uri, null);
 
         // Return the new URI with the ID (of the newly inserted row) appended at the end
