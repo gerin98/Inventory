@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +18,7 @@ public class ItemActivity extends AppCompatActivity {
      * Content URI for the existing item
      */
     private Uri mCurrentItemUri;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,21 @@ public class ItemActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        /**
+         * Create custom toolbar for the collapsing toolbar menu
+         *
+         */
+        // get ID of custom toolbar and set as the desired toolbar
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        // this line shows back button
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // ser the title of the toolbar
+        getSupportActionBar().setTitle("My title");
+
     }
 
     // TODO: 2018-07-08 need a dialog here

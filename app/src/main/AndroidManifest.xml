@@ -26,7 +26,8 @@
         <activity
             android:name=".ItemActivity"
             android:parentActivityName=".CatalogActivity"
-            android:theme="@style/noTitle"></activity>
+            android:theme="@style/noTitle"
+            ></activity>
         <provider
             android:authorities="com.example.gerin.inventory"
             android:name=".data.ItemProvider"

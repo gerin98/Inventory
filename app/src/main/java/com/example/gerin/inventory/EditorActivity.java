@@ -199,8 +199,6 @@ public class EditorActivity extends AppCompatActivity {
             }
         }
 
-//        // Close the activity
-//        finish();
     }
 
     @Override
@@ -232,7 +230,6 @@ public class EditorActivity extends AppCompatActivity {
             case android.R.id.home:
                 // Navigate up to parent activity
                 // Show a dialog later on asking if user really wants to leave
-//                NavUtils.navigateUpFromSameTask(EditorActivity.this);
                 finish();
                 return true;
         }
