@@ -19,7 +19,6 @@ import android.widget.Toast;
 
 import com.example.gerin.inventory.data.ItemContract;
 
-// TODO: 2018-07-08 possibly fix the animations when clicking up button ( finish() vs navigateUp() methods ) 
 public class CatalogActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     /**

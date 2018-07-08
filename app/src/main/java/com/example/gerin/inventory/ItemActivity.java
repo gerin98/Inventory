@@ -128,7 +128,8 @@ public class ItemActivity extends AppCompatActivity implements LoaderManager.Loa
             case android.R.id.home:
                 // Navigate up to parent activity
                 // Show a dialog later on asking if user really wants to leave
-                NavUtils.navigateUpFromSameTask(ItemActivity.this);
+//                NavUtils.navigateUpFromSameTask(ItemActivity.this);
+                finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);

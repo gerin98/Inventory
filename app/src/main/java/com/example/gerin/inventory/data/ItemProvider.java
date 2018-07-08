@@ -137,7 +137,6 @@ public class ItemProvider extends ContentProvider{
             return null;
         }
 
-        // TODO: 2018-07-07 set all listeners to notify database change 
 //        // Notify all listeners that the data has changed for the item content URI
         getContext().getContentResolver().notifyChange(uri, null);
 

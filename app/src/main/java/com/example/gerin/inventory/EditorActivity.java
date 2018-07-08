@@ -3,11 +3,13 @@ package com.example.gerin.inventory;
 import android.app.LoaderManager;
 import android.content.ContentValues;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -24,7 +26,6 @@ import com.example.gerin.inventory.data.ItemContract;
 
 import java.text.DecimalFormat;
 
-// TODO: 2018-07-08 add checks to see if adding new item or updating existing item 
 // TODO: 2018-07-08 add dialogs for deleting 
 public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -202,7 +203,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                         Toast.LENGTH_SHORT).show();
             }
         }
-
+        NavUtils.navigateUpFromSameTask(EditorActivity.this);
     }
 
     @Override
@@ -227,14 +228,15 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 return true;
             case R.id.action_delete_entry:
                 //delete item from database
-                deleteItem();
+                showDeleteConfirmationDialog();
                 //go back to catalog activity
-                NavUtils.navigateUpFromSameTask(EditorActivity.this);
                 return true;
             case android.R.id.home:
                 // Navigate up to parent activity
-                // Show a dialog later on asking if user really wants to leave
-                finish();
+                if(mItemHasChanged)
+                    showUnsavedChangesDialog();
+                else
+                    finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -300,4 +302,55 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mPriceEditText.setText("");
         mDescriptionEditText.setText("");
     }
+
+    private void showDeleteConfirmationDialog() {
+        // Create an AlertDialog.Builder and set the message, and click listeners
+        // for the postivie and negative buttons on the dialog.
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.delete_dialog_msg);
+        builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Delete" button
+                deleteItem();
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Cancel" button, so dismiss the dialog and continue editing
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void showUnsavedChangesDialog() {
+        // Create an AlertDialog.Builder and set the message, and click listeners
+        // for the postivie and negative buttons on the dialog.
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.return_dialog_msg);
+        builder.setPositiveButton(R.string.discard, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Discard" button
+                finish();
+            }
+        });
+        builder.setNegativeButton(R.string.edit, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Cancel" button, so dismiss the dialog and continue editing
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
 }
