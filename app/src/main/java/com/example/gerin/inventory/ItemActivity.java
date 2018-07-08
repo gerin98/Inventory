@@ -82,6 +82,8 @@ public class ItemActivity extends AppCompatActivity implements LoaderManager.Loa
         // this line shows back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        getSupportActionBar().setTitle("");
+
         getLoaderManager().initLoader(EXISTING_ITEM_LOADER, null, this);
 
     }
