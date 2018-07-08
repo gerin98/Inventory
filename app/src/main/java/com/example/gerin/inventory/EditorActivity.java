@@ -104,7 +104,7 @@ public class EditorActivity extends AppCompatActivity {
         mDescriptionEditText.setOnTouchListener(mTouchListener);
 
     }
-    
+
     private void saveItem() {
         // Read from input fields
         // Use trim to eliminate leading or trailing white space
@@ -114,19 +114,19 @@ public class EditorActivity extends AppCompatActivity {
         String descriptionString = mDescriptionEditText.getText().toString().trim();
 
         int quantityInteger = 0;
-        if(!TextUtils.isEmpty(quantityString)){
+        if (!TextUtils.isEmpty(quantityString)) {
             quantityInteger = Integer.parseInt(quantityString);
         }
 
         double priceDouble = 0;
-        if(!TextUtils.isEmpty(priceString)){
+        if (!TextUtils.isEmpty(priceString)) {
             priceDouble = Double.parseDouble(priceString);
         }
 
-
+// TODO: 2018-07-08 check for blank inputs in edit mode
 //        // Check if this is supposed to be a new pet
 //        // and check if all the fields in the editor are blank
-//        if (mCurrentPetUri == null &&
+//        if (mCurrentItemUri == null &&
 //                TextUtils.isEmpty(nameString) && TextUtils.isEmpty(breedString) &&
 //                TextUtils.isEmpty(weightString) && mGender == PetEntry.GENDER_UNKNOWN) {
 //            // Since no fields were modified, we can return early without creating a new pet.
@@ -142,22 +142,65 @@ public class EditorActivity extends AppCompatActivity {
         values.put(ItemContract.ItemEntry.COLUMN_ITEM_PRICE, priceDouble);
         values.put(ItemContract.ItemEntry.COLUMN_ITEM_DESCRIPTION, descriptionString);
 
+        // if URI is null, then we are adding a new item
+        if (mCurrentItemUri == null) {
+            // This is a NEW item, so insert a new item into the provider,
+            // returning the content URI for the new item.
+            Uri newUri = getContentResolver().insert(ItemContract.ItemEntry.CONTENT_URI, values);
 
-        // This is a NEW item, so insert a new item into the provider,
-        // returning the content URI for the new item.
-        Uri newUri = getContentResolver().insert(ItemContract.ItemEntry.CONTENT_URI, values);
-
-        // Show a toast message depending on whether or not the insertion was successful.
-        if (newUri == null) {
-            // If the new content URI is null, then there was an error with insertion.
-            Toast.makeText(this, getString(R.string.editor_insert_item_failed),
-                    Toast.LENGTH_SHORT).show();
+            // Show a toast message depending on whether or not the insertion was successful.
+            if (newUri == null) {
+                // If the new content URI is null, then there was an error with insertion.
+                Toast.makeText(this, getString(R.string.editor_insert_item_failed),
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                // Otherwise, the insertion was successful and we can display a toast.
+                Toast.makeText(this, getString(R.string.editor_insert_item_successful),
+                        Toast.LENGTH_SHORT).show();
+            }
         } else {
-            // Otherwise, the insertion was successful and we can display a toast.
-            Toast.makeText(this, getString(R.string.editor_insert_item_successful),
-                    Toast.LENGTH_SHORT).show();
+            // Otherwise this is an EXISTING item, so update the item with content URI: mCurrentItemUri
+            // and pass in the new ContentValues. Pass in null for the selection and selection args
+            // because mCurrentPetUri will already identify the correct row in the database that
+            // we want to modify.
+            int rowsAffected = getContentResolver().update(mCurrentItemUri, values, null, null);
+
+            // Show a toast message depending on whether or not the update was successful.
+            if (rowsAffected == 0) {
+                // If no rows were affected, then there was an error with the update.
+                Toast.makeText(this, getString(R.string.editor_update_item_failed),
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                // Otherwise, the update was successful and we can display a toast.
+                Toast.makeText(this, getString(R.string.editor_update_item_successful),
+                        Toast.LENGTH_SHORT).show();
+            }
         }
 
+    }
+
+    private void deleteItem() {
+        // Only perform the delete if this is an existing item.
+        if (mCurrentItemUri != null) {
+            // Call the ContentResolver to delete the item at the given content URI.
+            // Pass in null for the selection and selection args because the mCurrentItemUri
+            // content URI already identifies the item that we want.
+            int rowsDeleted = getContentResolver().delete(mCurrentItemUri, null, null);
+
+            // Show a toast message depending on whether or not the delete was successful.
+            if (rowsDeleted == 0) {
+                // If no rows were deleted, then there was an error with the delete.
+                Toast.makeText(this, getString(R.string.editor_delete_item_failed),
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                // Otherwise, the delete was successful and we can display a toast.
+                Toast.makeText(this, getString(R.string.editor_delete_item_successful),
+                        Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        // Close the activity
+        finish();
     }
 
     @Override
@@ -181,6 +224,10 @@ public class EditorActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.action_delete_entry:
+                //delete item from database
+                deleteItem();
+                //go back to catalog activity
+                NavUtils.navigateUpFromSameTask(EditorActivity.this);
                 return true;
             case android.R.id.home:
                 // Navigate up to parent activity

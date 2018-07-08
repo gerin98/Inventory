@@ -50,7 +50,7 @@ public class ItemActivity extends AppCompatActivity {
                     Toast.LENGTH_SHORT).show();
         } else {
             // Otherwise, the delete was successful and we can display a toast.
-            Toast.makeText(this, getString(R.string.editor_delete_pet_successful),
+            Toast.makeText(this, getString(R.string.editor_delete_item_successful),
                     Toast.LENGTH_SHORT).show();
         }
 
