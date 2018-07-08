@@ -2,12 +2,14 @@ package com.example.gerin.inventory;
 
 import android.app.LoaderManager;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -103,6 +105,8 @@ public class ItemActivity extends AppCompatActivity implements LoaderManager.Loa
                     Toast.LENGTH_SHORT).show();
         }
 
+        finish();
+
     }
 
     /* Methods to create menu */
@@ -121,9 +125,7 @@ public class ItemActivity extends AppCompatActivity implements LoaderManager.Loa
             // Respond to a click on the "Delete all entries" menu option
             case R.id.action_delete_current_entry:
                 // delete item from database
-                deleteItem();
-                //finish activity
-                finish();
+                showDeleteConfirmationDialog();
                 return true;
             case android.R.id.home:
                 // Navigate up to parent activity
@@ -199,4 +201,30 @@ public class ItemActivity extends AppCompatActivity implements LoaderManager.Loa
         descriptionView.setText("");
 
     }
+
+    private void showDeleteConfirmationDialog() {
+        // Create an AlertDialog.Builder and set the message, and click listeners
+        // for the postivie and negative buttons on the dialog.
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.delete_dialog_msg);
+        builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Delete" button
+                deleteItem();
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Cancel" button, so dismiss the dialog and continue editing
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
 }
