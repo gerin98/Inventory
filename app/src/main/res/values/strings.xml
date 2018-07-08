@@ -19,6 +19,6 @@
     <string name="category_tag">Tags</string>
     <string name="cardview_price_label">Price: $</string>
     <string name="cardview_quantity_label">Quantity:</string>
-    <string name="editor_insert_item_successful">Item successfully saved</string>
-    <string name="editor_insert_item_failed">Error occurred with saving item</string>
+    <string name="editor_insert_item_successful">Item saved successfully</string>
+    <string name="editor_insert_item_failed">An error occurred: Item could not be saved</string>
 </resources>

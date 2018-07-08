@@ -12,15 +12,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.gerin.inventory.data.ItemContract;
 
 public class CatalogActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    /** Adapter for the ListView */
+    /**
+     * Adapter for the ListView
+     */
     ItemCursorAdapter mCursorAdapter;
 
-    /** Identifier for the item data loader */
+    /**
+     * Identifier for the item data loader
+     */
     private static final int ITEM_LOADER = 0;
 
     @Override
@@ -77,9 +82,15 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         return super.onOptionsItemSelected(item);
     }
 
+    // TODO: 2018-07-08 show a dialog box here to confirm delete 
     /* Method to delete all items in the database */
-    private void deleteAllItems(){
+    private void deleteAllItems() {
         int rowsDeleted = getContentResolver().delete(ItemContract.ItemEntry.CONTENT_URI, null, null);
+        if (rowsDeleted >= 0) {
+            Toast.makeText(this, "All items deleted", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "An error occurred: Delete failed", Toast.LENGTH_SHORT).show();
+        }
     }
 
 

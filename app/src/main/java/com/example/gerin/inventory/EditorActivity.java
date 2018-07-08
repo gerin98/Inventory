@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -73,9 +74,20 @@ public class EditorActivity extends AppCompatActivity {
         // Read from input fields
         // Use trim to eliminate leading or trailing white space
         String nameString = mNameEditText.getText().toString().trim();
-        int quantityInteger = Integer.parseInt(mQuantityEditText.getText().toString().trim());
-        double priceDouble = Double.parseDouble(mPriceEditText.getText().toString().trim());
+        String quantityString = mQuantityEditText.getText().toString().trim();
+        String priceString = mPriceEditText.getText().toString().trim();
         String descriptionString = mDescriptionEditText.getText().toString().trim();
+
+        int quantityInteger = 0;
+        if(!TextUtils.isEmpty(quantityString)){
+            quantityInteger = Integer.parseInt(quantityString);
+        }
+
+        double priceDouble = 0;
+        if(!TextUtils.isEmpty(priceString)){
+            priceDouble = Double.parseDouble(priceString);
+        }
+
 
 //        // Check if this is supposed to be a new pet
 //        // and check if all the fields in the editor are blank
