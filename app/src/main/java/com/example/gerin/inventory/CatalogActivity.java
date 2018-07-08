@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.gerin.inventory.data.ItemContract;
 
+// TODO: 2018-07-08 add "tags" fields to the database
 public class CatalogActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     /**
@@ -100,6 +101,9 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
             // Respond to a click on the "Delete all entries" menu option
             case R.id.action_delete_all_entries:
                 deleteAllItems();
+                return true;
+            case R.id.action_sort_all_entries:
+                //sort entries
                 return true;
         }
         return super.onOptionsItemSelected(item);

@@ -10,4 +10,11 @@
         android:title="@string/action_delete_all_entries"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/action_sort_all_entries"
+        android:icon="@drawable/ic_sort_black_24dp"
+        android:iconTint="@color/white"
+        android:title="Sort items"
+        app:showAsAction="always" />
+
 </menu>
