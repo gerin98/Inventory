@@ -17,4 +17,6 @@
     <string name="hint_item_tag2">Tag2</string>
     <string name="hint_item_tag3">Tag3</string>
     <string name="category_tag">Tags</string>
+    <string name="cardview_price_label">Price: $</string>
+    <string name="cardview_quantity_label">Quantity:</string>
 </resources>
