@@ -6,12 +6,15 @@ import android.net.Uri;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.gerin.inventory.data.ItemContract;
+
+import java.text.DecimalFormat;
 
 public class EditorActivity extends AppCompatActivity {
 
@@ -63,8 +66,8 @@ public class EditorActivity extends AppCompatActivity {
         // Read from input fields
         // Use trim to eliminate leading or trailing white space
         String nameString = mNameEditText.getText().toString().trim();
-        String quantityString = mQuantityEditText.getText().toString().trim();
-        String priceString = mPriceEditText.getText().toString().trim();
+        int quantityInteger = Integer.parseInt(mQuantityEditText.getText().toString().trim());
+        double priceDouble = Double.parseDouble(mPriceEditText.getText().toString().trim());
 
 //        // Check if this is supposed to be a new pet
 //        // and check if all the fields in the editor are blank
@@ -80,8 +83,8 @@ public class EditorActivity extends AppCompatActivity {
         // and pet attributes from the editor are the values.
         ContentValues values = new ContentValues();
         values.put(ItemContract.ItemEntry.COLUMN_ITEM_NAME, nameString);
-        values.put(ItemContract.ItemEntry.COLUMN_ITEM_QUANTITY, quantityString);
-        values.put(ItemContract.ItemEntry.COLUMN_ITEM_PRICE, priceString);
+        values.put(ItemContract.ItemEntry.COLUMN_ITEM_QUANTITY, quantityInteger);
+        values.put(ItemContract.ItemEntry.COLUMN_ITEM_PRICE, priceDouble);
 
 
             // This is a NEW pet, so insert a new pet into the provider,
