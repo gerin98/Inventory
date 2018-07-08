@@ -199,8 +199,8 @@ public class EditorActivity extends AppCompatActivity {
             }
         }
 
-        // Close the activity
-        finish();
+//        // Close the activity
+//        finish();
     }
 
     @Override
