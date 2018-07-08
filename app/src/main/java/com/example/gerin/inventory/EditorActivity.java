@@ -58,6 +58,7 @@ public class EditorActivity extends AppCompatActivity {
 
     }
 
+    // TODO: 2018-07-08 change from string to int/double 
     private void saveItem() {
         // Read from input fields
         // Use trim to eliminate leading or trailing white space

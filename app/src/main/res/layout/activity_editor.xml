@@ -60,7 +60,7 @@
                     android:id="@+id/edit_item_price"
                     style="@style/EditorFieldStylePrice"
                     android:hint="@string/hint_item_price"
-                    android:inputType="number"/>
+                    android:inputType="numberDecimal"/>
 
             </LinearLayout>
 
