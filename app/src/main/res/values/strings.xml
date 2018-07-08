@@ -21,4 +21,9 @@
     <string name="cardview_quantity_label">Quantity:</string>
     <string name="editor_insert_item_successful">Item saved successfully</string>
     <string name="editor_insert_item_failed">An error occurred: Item could not be saved</string>
+    <string name="action_delete_current_entry">Delete item</string>
+    <string name="editor_delete_pet_successful">Item deleted successfully</string>
+    <string name="editor_delete_item_failed">An error occurred: Item could not be deleted</string>
+    <string name="editor_activity_title_new_item">Add an item</string>
+    <string name="editor_activity_title_edit_item">Edit item</string>
 </resources>

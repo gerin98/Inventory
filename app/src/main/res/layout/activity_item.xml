@@ -63,7 +63,7 @@
 
     <!-- FAB -->
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/catalog_fab"
+        android:id="@+id/item_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -74,6 +74,6 @@
         android:tint="@color/white"
         app:layout_anchor="@id/app_bar_layout"
         app:layout_anchorGravity="bottom|right|end"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        app:srcCompat="@drawable/ic_edit_black_24dp" />
 
 </android.support.design.widget.CoordinatorLayout>

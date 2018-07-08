@@ -1,16 +1,19 @@
 package com.example.gerin.inventory;
 
 import android.app.LoaderManager;
+import android.content.ContentUris;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -34,16 +37,16 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         setContentView(R.layout.activity_catalog);
 
         // Find the ListView which will be populated with the pet data
-        ListView petListView = (ListView) findViewById(R.id.catalog_list);
+        ListView itemListView = (ListView) findViewById(R.id.catalog_list);
 
         // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
         View emptyView = findViewById(R.id.empty_view);
-        petListView.setEmptyView(emptyView);
+        itemListView.setEmptyView(emptyView);
 
         // Setup an Adapter to create a list item for each row of pet data in the Cursor.
         // There is no pet data yet (until the loader finishes) so pass in null for the Cursor.
         mCursorAdapter = new ItemCursorAdapter(this, null, 0);
-        petListView.setAdapter(mCursorAdapter);
+        itemListView.setAdapter(mCursorAdapter);
 
 
         // Setup FAB to open EditorActivity
@@ -52,6 +55,26 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(CatalogActivity.this, EditorActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // Setup the item click listener
+        itemListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                // Create new intent to go to {@link EditorActivity}
+                Intent intent = new Intent(CatalogActivity.this, ItemActivity.class);
+
+                // Form the content URI that represents the specific pet that was clicked on,
+                // by appending the "id" (passed as input to this method) onto the
+                // {@link PetEntry#CONTENT_URI}.
+                // For example, the URI would be "content://com.example.android.pets/pets/2"
+                // if the pet with ID 2 was clicked on.
+                Uri currentPetUri = ContentUris.withAppendedId(ItemContract.ItemEntry.CONTENT_URI, id);
+                // Set the URI on the data field of the intent
+                intent.setData(currentPetUri);
+                // Launch the {@link EditorActivity} to display the data for the current pet.
                 startActivity(intent);
             }
         });

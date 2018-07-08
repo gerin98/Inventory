@@ -10,6 +10,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +20,8 @@ import com.example.gerin.inventory.data.ItemContract;
 
 import java.text.DecimalFormat;
 
+// TODO: 2018-07-08 add checks to see if adding new item or updating existing item 
+// TODO: 2018-07-08 add dialogs for deleting 
 public class EditorActivity extends AppCompatActivity {
 
     /**
@@ -50,26 +54,57 @@ public class EditorActivity extends AppCompatActivity {
      */
     private EditText mDescriptionEditText;
 
+    /**
+     * Boolean flag that keeps track of whether the item has been edited (true) or not (false)
+     */
+    private boolean mItemHasChanged = false;
+
+    private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            mItemHasChanged = true;
+            return false;
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
 
-        // Examine the intent that was used to launch this activity
-        Intent intent = getIntent();
 
-        // Assume for now that user is inserting a new pet
-        setTitle(getString(R.string.editor_activity_title_new_pet));
+        // Examine the intent that was used to launch this activity,
+        // in order to figure out if we're creating a new item or editing an existing one.
+        Intent intent = getIntent();
+        mCurrentItemUri = intent.getData();
+
+        // If the intent DOES NOT contain a content URI, then we know that we are
+        // creating a new item.
+        if (mCurrentItemUri == null) {
+            // This is a new pet, so change the app bar to say "Add a Pet"
+            setTitle(getString(R.string.editor_activity_title_new_item));
+        } else {
+            // Otherwise this is an existing pet, so change app bar to say "Edit Pet"
+            setTitle(getString(R.string.editor_activity_title_edit_item));
+
+            // Initialize a loader to read the pet data from the database
+            // and display the current values in the editor
+//            getLoaderManager().initLoader(EXISTING_PET_LOADER, null, this);
+        }
+
 
         mNameEditText = (EditText) findViewById(R.id.edit_item_name);
         mQuantityEditText = (EditText) findViewById(R.id.edit_item_quantity);
         mPriceEditText = (EditText) findViewById(R.id.edit_item_price);
         mDescriptionEditText = (EditText) findViewById(R.id.edit_item_description);
 
+        mNameEditText.setOnTouchListener(mTouchListener);
+        mQuantityEditText.setOnTouchListener(mTouchListener);
+        mPriceEditText.setOnTouchListener(mTouchListener);
+        mDescriptionEditText.setOnTouchListener(mTouchListener);
 
     }
-
-    // TODO: 2018-07-08 change from string to int/double 
+    
     private void saveItem() {
         // Read from input fields
         // Use trim to eliminate leading or trailing white space
@@ -150,7 +185,8 @@ public class EditorActivity extends AppCompatActivity {
             case android.R.id.home:
                 // Navigate up to parent activity
                 // Show a dialog later on asking if user really wants to leave
-                NavUtils.navigateUpFromSameTask(EditorActivity.this);
+//                NavUtils.navigateUpFromSameTask(EditorActivity.this);
+                finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);

@@ -16,8 +16,7 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            </intent-filter></activity>
         <activity
             android:name=".CatalogActivity"
             android:theme="@style/AppTheme"></activity>
@@ -25,7 +24,9 @@
             android:name=".EditorActivity"
             android:parentActivityName=".CatalogActivity"></activity>
         <activity
-            android:name=".ItemActivity"></activity>
+            android:name=".ItemActivity"
+            android:parentActivityName=".CatalogActivity"
+            android:theme="@style/noTitle"></activity>
         <provider
             android:authorities="com.example.gerin.inventory"
             android:name=".data.ItemProvider"

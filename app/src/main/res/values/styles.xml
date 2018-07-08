@@ -19,6 +19,9 @@
     <!-- Theme without toolbar for the splash screen -->
     <style name="noTitle" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowNoTitle">true</item>
+        <item name="colorPrimary">@color/dodger_blue</item>
+        <item name="colorPrimaryDark">@color/dodger_blue_dark</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <!-- Style for a category in the editor -->
