@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.gerin.inventory.data.ItemContract;
 
@@ -19,7 +20,7 @@ import java.text.DecimalFormat;
 public class EditorActivity extends AppCompatActivity {
 
     /**
-            * Identifier for the pet data loader
+     * Identifier for the pet data loader
      */
     private static final int EXISTING_PET_LOADER = 0;
 
@@ -29,19 +30,24 @@ public class EditorActivity extends AppCompatActivity {
     private Uri mCurrentItemUri;
 
     /**
-     * EditText field to enter the pet's name
+     * EditText field to enter the item's name
      */
     private EditText mNameEditText;
 
     /**
-     * EditText field to enter the pet's breed
+     * EditText field to enter the item's quantity
      */
     private EditText mQuantityEditText;
 
     /**
-     * EditText field to enter the pet's weight
+     * EditText field to enter the item's price
      */
     private EditText mPriceEditText;
+
+    /**
+     * EditText field to enter the item's description
+     */
+    private EditText mDescriptionEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +63,7 @@ public class EditorActivity extends AppCompatActivity {
         mNameEditText = (EditText) findViewById(R.id.edit_item_name);
         mQuantityEditText = (EditText) findViewById(R.id.edit_item_quantity);
         mPriceEditText = (EditText) findViewById(R.id.edit_item_price);
+        mDescriptionEditText = (EditText) findViewById(R.id.edit_item_description);
 
 
     }
@@ -68,6 +75,7 @@ public class EditorActivity extends AppCompatActivity {
         String nameString = mNameEditText.getText().toString().trim();
         int quantityInteger = Integer.parseInt(mQuantityEditText.getText().toString().trim());
         double priceDouble = Double.parseDouble(mPriceEditText.getText().toString().trim());
+        String descriptionString = mDescriptionEditText.getText().toString().trim();
 
 //        // Check if this is supposed to be a new pet
 //        // and check if all the fields in the editor are blank
@@ -85,22 +93,23 @@ public class EditorActivity extends AppCompatActivity {
         values.put(ItemContract.ItemEntry.COLUMN_ITEM_NAME, nameString);
         values.put(ItemContract.ItemEntry.COLUMN_ITEM_QUANTITY, quantityInteger);
         values.put(ItemContract.ItemEntry.COLUMN_ITEM_PRICE, priceDouble);
+        values.put(ItemContract.ItemEntry.COLUMN_ITEM_DESCRIPTION, descriptionString);
 
 
-            // This is a NEW pet, so insert a new pet into the provider,
-            // returning the content URI for the new pet.
-            Uri newUri = getContentResolver().insert(ItemContract.ItemEntry.CONTENT_URI, values);
+        // This is a NEW item, so insert a new item into the provider,
+        // returning the content URI for the new item.
+        Uri newUri = getContentResolver().insert(ItemContract.ItemEntry.CONTENT_URI, values);
 
-//            // Show a toast message depending on whether or not the insertion was successful.
-//            if (newUri == null) {
-//                // If the new content URI is null, then there was an error with insertion.
-//                Toast.makeText(this, getString(R.string.editor_insert_pet_failed),
-//                        Toast.LENGTH_SHORT).show();
-//            } else {
-//                // Otherwise, the insertion was successful and we can display a toast.
-//                Toast.makeText(this, getString(R.string.editor_insert_pet_successful),
-//                        Toast.LENGTH_SHORT).show();
-//            }
+        // Show a toast message depending on whether or not the insertion was successful.
+        if (newUri == null) {
+            // If the new content URI is null, then there was an error with insertion.
+            Toast.makeText(this, getString(R.string.editor_insert_item_failed),
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            // Otherwise, the insertion was successful and we can display a toast.
+            Toast.makeText(this, getString(R.string.editor_insert_item_successful),
+                    Toast.LENGTH_SHORT).show();
+        }
 
     }
 

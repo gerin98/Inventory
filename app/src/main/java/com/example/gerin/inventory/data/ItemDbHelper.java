@@ -38,10 +38,10 @@ public class ItemDbHelper extends SQLiteOpenHelper{
                 + ItemEntry.COLUMN_ITEM_NAME + " TEXT NOT NULL, "
                 + ItemEntry.COLUMN_ITEM_QUANTITY + " INTEGER DEFAULT 0, "
                 + ItemEntry.COLUMN_ITEM_PRICE + " DOUBLE DEFAULT 0, "
-                + ItemEntry.COLUMN_ITEM_DESCRIPTION + "TEXT, "
-                + ItemEntry.COLUMN_ITEM_TAG1 + "TEXT, "
-                + ItemEntry.COLUMN_ITEM_TAG2 + "TEXT, "
-                + ItemEntry.COLUMN_ITEM_TAG3 + "TEXT);";
+                + ItemEntry.COLUMN_ITEM_DESCRIPTION + " TEXT, "
+                + ItemEntry.COLUMN_ITEM_TAG1 + " TEXT, "
+                + ItemEntry.COLUMN_ITEM_TAG2 + " TEXT, "
+                + ItemEntry.COLUMN_ITEM_TAG3 + " TEXT);";
 
         // Execute the SQL statement
         db.execSQL(SQL_CREATE_ITEMS_TABLE);
