@@ -148,4 +148,9 @@
         android:text="insert image"
         android:onClick="insertImage"/>
 
+    <ImageView
+        android:id="@+id/edit_item_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 </LinearLayout>

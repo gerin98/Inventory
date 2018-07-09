@@ -1,5 +1,6 @@
 package com.example.gerin.inventory;
 
+import android.app.Activity;
 import android.app.LoaderManager;
 import android.content.ContentValues;
 import android.content.CursorLoader;
@@ -11,6 +12,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
@@ -23,12 +25,14 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.gerin.inventory.data.ItemContract;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.text.DecimalFormat;
 
 // TODO: 2018-07-08 add dialogs for deleting 
@@ -65,9 +69,19 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private EditText mDescriptionEditText;
 
     /**
+     * ImageView to show product image
+     */
+    private ImageView mItemImageView;
+
+    /**
      * Boolean flag that keeps track of whether the item has been edited (true) or not (false)
      */
     private boolean mItemHasChanged = false;
+
+    /**
+     * ID for accessing image from gallery
+     */
+    private static final int GALLERY_REQUEST = 1;
 
     private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
         @Override
@@ -107,6 +121,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mQuantityEditText = (EditText) findViewById(R.id.edit_item_quantity);
         mPriceEditText = (EditText) findViewById(R.id.edit_item_price);
         mDescriptionEditText = (EditText) findViewById(R.id.edit_item_description);
+        mItemImageView = (ImageView) findViewById(R.id.edit_item_image);
 
         mNameEditText.setOnTouchListener(mTouchListener);
         mQuantityEditText.setOnTouchListener(mTouchListener);
@@ -368,12 +383,26 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     public void insertImage(View view){
-        Drawable vectorDrawable = VectorDrawableCompat.create(getResources(), R.drawable.fireworks,  this.getTheme());
-        Bitmap bitmap = ((BitmapDrawable) vectorDrawable).getBitmap();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        byte[] photo = baos.toByteArray();
-//        db.insertUserDetails(value1,value2, value3, photo,value2);
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        photoPickerIntent.setType("image/*");
+        startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == Activity.RESULT_OK)
+            switch (requestCode){
+                case GALLERY_REQUEST:
+                    Uri selectedImage = data.getData();
+                    try {
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
+                        mItemImageView.setImageBitmap(bitmap);
+                    } catch (IOException e) {
+                        Log.i("TAG", "Some exception " + e);
+                    }
+                    Log.e("Editor Activity", "successfully chose image");
+                    break;
+            }
     }
 
 }
