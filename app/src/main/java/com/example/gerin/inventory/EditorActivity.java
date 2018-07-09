@@ -37,6 +37,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.DecimalFormat;
 
+import javax.xml.datatype.Duration;
+
 // TODO: 2018-07-08 add dialogs for deleting 
 public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -89,6 +91,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
      * ID for accessing image from gallery
      */
     private static final int GALLERY_REQUEST = 1;
+
+    /**
+     * Maximum size for an image file that can be stored in the database
+     */
+    private static final int FIVE_MB = 5000000;
 
     private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
         @Override
@@ -418,8 +425,17 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                     Uri selectedImage = data.getData();
                     try {
                         mItemBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
-                        mItemImageView.setImageBitmap(mItemBitmap);
-                        Log.e("Editor Activity", "successfully converted image");
+                        int i = mItemBitmap.getAllocationByteCount();
+                        if(mItemBitmap.getAllocationByteCount() < FIVE_MB) {
+                            mItemImageView.setImageBitmap(mItemBitmap);
+                            Log.e("Editor Activity", "successfully converted image");
+                        }
+                        else{
+                            mItemBitmap = ((BitmapDrawable)getResources().getDrawable(R.drawable.image_prompt)).getBitmap();
+                            Log.e("Editor Activity", "image too large");
+                            Toast.makeText(this,"Image too large", Toast.LENGTH_SHORT).show();
+                        }
+                        Log.e("Editor Activity", String.valueOf(i));
                     } catch (IOException e) {
                         Log.e("onActivityResult", "Some exception " + e);
                     }

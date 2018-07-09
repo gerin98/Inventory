@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <item
-        android:id="@+id/action_delete_current_entry"
-        android:title="@string/action_delete_current_entry"
+        android:id="@+id/action_edit_current_entry"
+        android:title="Edit item"
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/action_edit_current_entry"
-        android:title="Edit item"
+        android:id="@+id/action_delete_current_entry"
+        android:title="@string/action_delete_current_entry"
         app:showAsAction="never" />
 
 </menu>
