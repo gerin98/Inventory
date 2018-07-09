@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NavUtils;
@@ -16,11 +18,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.gerin.inventory.data.ItemContract;
 
+import java.io.ByteArrayInputStream;
 import java.text.DecimalFormat;
 
 public class ItemActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
@@ -47,6 +51,7 @@ public class ItemActivity extends AppCompatActivity implements LoaderManager.Loa
     TextView quantityView;
     TextView priceView;
     TextView descriptionView;
+    ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +65,7 @@ public class ItemActivity extends AppCompatActivity implements LoaderManager.Loa
         quantityView = (TextView) findViewById(R.id.item_quantity_field);
         priceView = (TextView) findViewById(R.id.item_price_field);
         descriptionView = (TextView) findViewById(R.id.item_description_field);
+        imageView = (ImageView) findViewById(R.id.item_image_field);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.item_fab);
 
@@ -146,7 +152,8 @@ public class ItemActivity extends AppCompatActivity implements LoaderManager.Loa
                 ItemContract.ItemEntry.COLUMN_ITEM_NAME,
                 ItemContract.ItemEntry.COLUMN_ITEM_QUANTITY,
                 ItemContract.ItemEntry.COLUMN_ITEM_PRICE,
-                ItemContract.ItemEntry.COLUMN_ITEM_DESCRIPTION};
+                ItemContract.ItemEntry.COLUMN_ITEM_DESCRIPTION,
+                ItemContract.ItemEntry.COLUMN_ITEM_IMAGE};
 
         // This loader will execute the ContentProvider's query method on a background thread
         return new CursorLoader(this,   // Parent activity context
@@ -170,12 +177,17 @@ public class ItemActivity extends AppCompatActivity implements LoaderManager.Loa
             int quantityColumnIndex = data.getColumnIndex(ItemContract.ItemEntry.COLUMN_ITEM_QUANTITY);
             int priceColumnIndex = data.getColumnIndex(ItemContract.ItemEntry.COLUMN_ITEM_PRICE);
             int descriptionColumnIndex = data.getColumnIndex(ItemContract.ItemEntry.COLUMN_ITEM_DESCRIPTION);
+            int imageColumnIndex = data.getColumnIndex(ItemContract.ItemEntry.COLUMN_ITEM_IMAGE);
 
             // Extract out the value from the Cursor for the given column index
             String name = data.getString(nameColumnIndex);
             int quantity = data.getInt(quantityColumnIndex);
             double price = data.getDouble(priceColumnIndex);
             String description = data.getString(descriptionColumnIndex);
+            byte[] photo= data.getBlob(imageColumnIndex);
+
+            ByteArrayInputStream imageStream = new ByteArrayInputStream(photo);
+            Bitmap theImage= BitmapFactory.decodeStream(imageStream);
 
             // set the title of the toolbar
             getSupportActionBar().setTitle(name);
@@ -185,6 +197,7 @@ public class ItemActivity extends AppCompatActivity implements LoaderManager.Loa
             DecimalFormat formatter = new DecimalFormat("#0.00");
             priceView.setText(formatter.format(price));
             descriptionView.setText(description);
+            imageView.setImageBitmap(theImage);
 
         }
     }

@@ -7,7 +7,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +28,7 @@ import android.widget.Toast;
 
 import com.example.gerin.inventory.data.ItemContract;
 
+import java.io.ByteArrayOutputStream;
 import java.text.DecimalFormat;
 
 // TODO: 2018-07-08 add dialogs for deleting 
@@ -138,6 +143,15 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 //            // No need to create ContentValues and no need to do any ContentProvider operations.
 //            return;
 //        }
+        /**
+         * temp code to insert image into database
+         */
+
+        Drawable vectorDrawable = VectorDrawableCompat.create(getResources(), R.drawable.fireworks,  this.getTheme());
+        Bitmap bitmap = ((BitmapDrawable)getResources().getDrawable(R.drawable.fireworks)).getBitmap();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] photo = baos.toByteArray();
 
         // Create a ContentValues object where column names are the keys,
         // and pet attributes from the editor are the values.
@@ -146,6 +160,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         values.put(ItemContract.ItemEntry.COLUMN_ITEM_QUANTITY, quantityInteger);
         values.put(ItemContract.ItemEntry.COLUMN_ITEM_PRICE, priceDouble);
         values.put(ItemContract.ItemEntry.COLUMN_ITEM_DESCRIPTION, descriptionString);
+        values.put(ItemContract.ItemEntry.COLUMN_ITEM_IMAGE, photo);
 
         // if URI is null, then we are adding a new item
         if (mCurrentItemUri == null) {
@@ -213,7 +228,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         getMenuInflater().inflate(R.menu.menu_editor, menu);
         return true;
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -351,6 +365,15 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         // Create and show the AlertDialog
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    public void insertImage(View view){
+        Drawable vectorDrawable = VectorDrawableCompat.create(getResources(), R.drawable.fireworks,  this.getTheme());
+        Bitmap bitmap = ((BitmapDrawable) vectorDrawable).getBitmap();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] photo = baos.toByteArray();
+//        db.insertUserDetails(value1,value2, value3, photo,value2);
     }
 
 }

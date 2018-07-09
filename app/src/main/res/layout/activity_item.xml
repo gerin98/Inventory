@@ -25,11 +25,11 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
-                android:id="@+id/image"
+                android:id="@+id/item_image_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scaleType="centerCrop"
-                android:src="@drawable/fireworks"
+                android:src="@drawable/image_prompt"
                 app:layout_collapseMode="parallax" />
 
             <android.support.v7.widget.Toolbar
