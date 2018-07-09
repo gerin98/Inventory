@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -31,6 +32,7 @@ import android.widget.Toast;
 
 import com.example.gerin.inventory.data.ItemContract;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -76,7 +78,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     /**
      * Bitmap of item's image
      */
-    private static Bitmap mItemBitmap;
+    public Bitmap mItemBitmap;
 
     /**
      * Boolean flag that keeps track of whether the item has been edited (true) or not (false)
@@ -175,6 +177,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         mItemBitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
         byte[] photo = baos.toByteArray();
+
+        Log.e("save method","converted to byte array");
 
         // Create a ContentValues object where column names are the keys,
         // and pet attributes from the editor are the values.
@@ -288,7 +292,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 ItemContract.ItemEntry.COLUMN_ITEM_NAME,
                 ItemContract.ItemEntry.COLUMN_ITEM_QUANTITY,
                 ItemContract.ItemEntry.COLUMN_ITEM_PRICE,
-                ItemContract.ItemEntry.COLUMN_ITEM_DESCRIPTION};
+                ItemContract.ItemEntry.COLUMN_ITEM_DESCRIPTION,
+                ItemContract.ItemEntry.COLUMN_ITEM_IMAGE};
 
         // This loader will execute the ContentProvider's query method on a background thread
         return new CursorLoader(this,   // Parent activity context
@@ -314,12 +319,20 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             int quantityColumnIndex = data.getColumnIndex(ItemContract.ItemEntry.COLUMN_ITEM_QUANTITY);
             int priceColumnIndex = data.getColumnIndex(ItemContract.ItemEntry.COLUMN_ITEM_PRICE);
             int descriptionColumnIndex = data.getColumnIndex(ItemContract.ItemEntry.COLUMN_ITEM_DESCRIPTION);
+            int imageColumnIndex = data.getColumnIndex(ItemContract.ItemEntry.COLUMN_ITEM_IMAGE);
+
 
             // Extract out the value from the Cursor for the given column index
             String name = data.getString(nameColumnIndex);
             int quantity = data.getInt(quantityColumnIndex);
             double price = data.getDouble(priceColumnIndex);
             String description = data.getString(descriptionColumnIndex);
+            byte[] photo = data.getBlob(imageColumnIndex);
+
+            ByteArrayInputStream imageStream = new ByteArrayInputStream(photo);
+            Bitmap theImage = BitmapFactory.decodeStream(imageStream);
+
+            mItemBitmap = theImage;
 
             // Update the views on the screen with the values from the database
             mNameEditText.setText(name);
@@ -327,6 +340,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             DecimalFormat formatter = new DecimalFormat("#0.00");
             mPriceEditText.setText(formatter.format(price));
             mDescriptionEditText.setText(description);
+            mItemImageView.setImageBitmap(theImage);
 
         }
     }
@@ -405,10 +419,10 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                     try {
                         mItemBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
                         mItemImageView.setImageBitmap(mItemBitmap);
+                        Log.e("Editor Activity", "successfully converted image");
                     } catch (IOException e) {
-                        Log.i("TAG", "Some exception " + e);
+                        Log.e("onActivityResult", "Some exception " + e);
                     }
-                    Log.e("Editor Activity", "successfully chose image");
                     break;
             }
     }

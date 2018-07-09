@@ -8,4 +8,9 @@
         android:title="@string/action_delete_current_entry"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/action_edit_current_entry"
+        android:title="Edit item"
+        app:showAsAction="never" />
+
 </menu>

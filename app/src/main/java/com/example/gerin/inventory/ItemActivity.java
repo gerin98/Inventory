@@ -27,7 +27,7 @@ import com.example.gerin.inventory.data.ItemContract;
 import java.io.ByteArrayInputStream;
 import java.text.DecimalFormat;
 
-public class ItemActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
+public class ItemActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     /**
      * Content URI for the existing item
@@ -40,7 +40,7 @@ public class ItemActivity extends AppCompatActivity implements LoaderManager.Loa
     private static final int EXISTING_ITEM_LOADER = 0;
 
     /**
-     *  Custom toolbar
+     * Custom toolbar
      */
     private Toolbar toolbar;
 
@@ -97,7 +97,7 @@ public class ItemActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     // TODO: 2018-07-08 need a dialog here
-    private void deleteItem(){
+    private void deleteItem() {
         int rowsDeleted = getContentResolver().delete(mCurrentItemUri, null, null);
 
         // Show a toast message depending on whether or not the delete was successful.
@@ -132,6 +132,11 @@ public class ItemActivity extends AppCompatActivity implements LoaderManager.Loa
             case R.id.action_delete_current_entry:
                 // delete item from database
                 showDeleteConfirmationDialog();
+                return true;
+            case R.id.action_edit_current_entry:
+                Intent intent = new Intent(ItemActivity.this, EditorActivity.class);
+                intent.setData(mCurrentItemUri);
+                startActivity(intent);
                 return true;
             case android.R.id.home:
                 // Navigate up to parent activity
@@ -184,10 +189,10 @@ public class ItemActivity extends AppCompatActivity implements LoaderManager.Loa
             int quantity = data.getInt(quantityColumnIndex);
             double price = data.getDouble(priceColumnIndex);
             String description = data.getString(descriptionColumnIndex);
-            byte[] photo= data.getBlob(imageColumnIndex);
+            byte[] photo = data.getBlob(imageColumnIndex);
 
             ByteArrayInputStream imageStream = new ByteArrayInputStream(photo);
-            Bitmap theImage= BitmapFactory.decodeStream(imageStream);
+            Bitmap theImage = BitmapFactory.decodeStream(imageStream);
 
             // set the title of the toolbar
             getSupportActionBar().setTitle(name);
