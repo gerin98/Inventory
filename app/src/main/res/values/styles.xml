@@ -73,5 +73,14 @@
         <item name="android:textAppearance">?android:textAppearanceMedium</item>
     </style>
 
+    <!-- Style for "Sort By" alert dialog-->
+    <style name="RadioDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <!--item RadioButton or CheckBox color-->
+        <item name="colorControlNormal">@color/colorAccent</item>
+        <item name="colorControlActivated">@color/colorAccent</item>
+        <!--buttons color-->
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
 
 </resources>

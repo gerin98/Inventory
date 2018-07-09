@@ -67,6 +67,10 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
      */
     private static final int NEWEST_FIRST = 3;
 
+    /**
+     * Current Sort Choice
+     */
+    private static int sort_choice = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,16 +185,22 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         }
     }
 
+    // TODO: 2018-07-08 put sortAllItems in setPositiveButton 
     private void showSortConfirmationDialog() {
 
         // Create an AlertDialog.Builder and set the message, and click listeners
         // for the postivie and negative buttons on the dialog.
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.RadioDialogTheme);
         builder.setTitle(R.string.sort_dialog_msg);
-        builder.setSingleChoiceItems(options, -1, new DialogInterface.OnClickListener() {
+        builder.setSingleChoiceItems(options, sort_choice, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 sortAllItems(which);
+            }
+        });
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
                 if (dialog != null) {
                     dialog.dismiss();
                 }
@@ -208,15 +218,19 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         switch (choice) {
             case ASCENDING:
                 DEFAULT_SORT_ORDER = ItemContract.ItemEntry.COLUMN_ITEM_NAME + " ASC";
+                sort_choice = 0;
                 break;
             case DESCENDING:
                 DEFAULT_SORT_ORDER = ItemContract.ItemEntry.COLUMN_ITEM_NAME + " DESC";
+                sort_choice = 1;
                 break;
             case OLDEST_FIRST:
                 DEFAULT_SORT_ORDER = null;
+                sort_choice = 2;
                 break;
             case NEWEST_FIRST:
                 DEFAULT_SORT_ORDER = ItemContract.ItemEntry._ID + " DESC";
+                sort_choice = 3;
                 break;
 
         }
