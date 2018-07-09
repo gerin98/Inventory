@@ -137,7 +137,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
             // Respond to a click on the "Delete all entries" menu option
             case R.id.action_delete_all_entries:
                 // delete entries
-                deleteAllItems();
+               showDeleteAllConfirmationDialog();
                 return true;
             case R.id.action_sort_all_entries:
                 // sort entries
@@ -147,8 +147,31 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         return super.onOptionsItemSelected(item);
     }
 
-    // TODO: 2018-07-08 show a dialog box here to confirm delete 
-    /* Method to delete all items in the database */
+    private void showDeleteAllConfirmationDialog() {
+        // Create an AlertDialog.Builder and set the message, and click listeners
+        // for the postivie and negative buttons on the dialog.
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.delete_all_dialog_msg);
+        builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Delete" button
+                deleteAllItems();
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Cancel" button, so dismiss the dialog and continue editing
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
     private void deleteAllItems() {
         int rowsDeleted = getContentResolver().delete(ItemContract.ItemEntry.CONTENT_URI, null, null);
         if (rowsDeleted >= 0) {
@@ -164,14 +187,6 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         // for the postivie and negative buttons on the dialog.
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.sort_dialog_msg);
-//        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-//            public void onClick(DialogInterface dialog, int id) {
-//                // User clicked the "Cancel" button, so dismiss the dialog and continue editing
-//                if (dialog != null) {
-//                    dialog.dismiss();
-//                }
-//            }
-//        });
         builder.setSingleChoiceItems(options, -1, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -188,18 +203,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
     }
 
     private void sortAllItems(int choice) {
-        String[] projection = {
-                ItemContract.ItemEntry._ID,
-                ItemContract.ItemEntry.COLUMN_ITEM_NAME,
-                ItemContract.ItemEntry.COLUMN_ITEM_QUANTITY,
-                ItemContract.ItemEntry.COLUMN_ITEM_PRICE};
 
-        // Database helper object
-        ItemDbHelper mDbHelper = new ItemDbHelper(this);
-        // Get readable database
-        SQLiteDatabase database = mDbHelper.getReadableDatabase();
-        // This cursor will hold the result of the query
-        Cursor data;
         // Sort order
         switch (choice) {
             case ASCENDING:
@@ -216,10 +220,6 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
                 break;
 
         }
-
-//        // Cursor containing all rows of the table
-//        data = database.query(ItemContract.ItemEntry.TABLE_NAME, projection, null, null,
-//                null, null, DEFAULT_SORT_ORDER);
 
         // Restart the LoaderManager so OnCreate can be called again with new parameters for the cursor
         getLoaderManager().restartLoader(0, null, this);
