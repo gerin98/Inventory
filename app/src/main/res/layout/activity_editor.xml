@@ -17,8 +17,9 @@
             android:id="@+id/edit_item_image"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_weight="0.4"
             android:scaleType="centerCrop"
-            android:layout_weight="0.4"/>
+            android:src="@drawable/image_prompt"/>
 
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -176,6 +177,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
         android:clickable="true"
+        android:tint="@color/white"
         android:onClick="insertImage"
         app:srcCompat="@android:drawable/ic_menu_camera"
         app:layout_anchor="@id/edit_item_image"
