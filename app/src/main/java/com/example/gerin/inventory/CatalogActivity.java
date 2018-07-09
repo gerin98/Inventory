@@ -3,12 +3,14 @@ package com.example.gerin.inventory;
 import android.app.LoaderManager;
 import android.content.ContentUris;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,11 +38,35 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
     private static final int ITEM_LOADER = 0;
 
     /**
-     *
-     * @param savedInstanceState
+     * Sort order parameter for cursor loader and loader manager
      */
-
     private String DEFAULT_SORT_ORDER = null;
+
+    /**
+     * Options for Sorting dialog
+     */
+    private final String[] options = new String[]{"Alphabetical - Ascending", "Alphabetical - Descending", "Oldest first", "Newest first"};
+
+    /**
+     * Alphabetical - Ascending order
+     */
+    private static final int ASCENDING = 0;
+
+    /**
+     * Alphabetical - Descending order
+     */
+    private static final int DESCENDING = 1;
+
+    /**
+     * Oldest first order
+     */
+    private static final int OLDEST_FIRST = 2;
+
+    /**
+     * Newest first order
+     */
+    private static final int NEWEST_FIRST = 3;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,7 +141,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
                 return true;
             case R.id.action_sort_all_entries:
                 // sort entries
-                sortAllItems();
+                showSortConfirmationDialog();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -132,7 +158,36 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         }
     }
 
-    private void sortAllItems(){
+    private void showSortConfirmationDialog() {
+
+        // Create an AlertDialog.Builder and set the message, and click listeners
+        // for the postivie and negative buttons on the dialog.
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.sort_dialog_msg);
+//        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+//            public void onClick(DialogInterface dialog, int id) {
+//                // User clicked the "Cancel" button, so dismiss the dialog and continue editing
+//                if (dialog != null) {
+//                    dialog.dismiss();
+//                }
+//            }
+//        });
+        builder.setSingleChoiceItems(options, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                sortAllItems(which);
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void sortAllItems(int choice) {
         String[] projection = {
                 ItemContract.ItemEntry._ID,
                 ItemContract.ItemEntry.COLUMN_ITEM_NAME,
@@ -146,16 +201,30 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         // This cursor will hold the result of the query
         Cursor data;
         // Sort order
-        DEFAULT_SORT_ORDER = ItemContract.ItemEntry.COLUMN_ITEM_NAME + " DESC";
-        // Cursor containing all rows of the table
-        data = database.query(ItemContract.ItemEntry.TABLE_NAME, projection, null, null,
-                null, null, DEFAULT_SORT_ORDER);
+        switch (choice) {
+            case ASCENDING:
+                DEFAULT_SORT_ORDER = ItemContract.ItemEntry.COLUMN_ITEM_NAME + " ASC";
+                break;
+            case DESCENDING:
+                DEFAULT_SORT_ORDER = ItemContract.ItemEntry.COLUMN_ITEM_NAME + " DESC";
+                break;
+            case OLDEST_FIRST:
+                DEFAULT_SORT_ORDER = null;
+                break;
+            case NEWEST_FIRST:
+                DEFAULT_SORT_ORDER = ItemContract.ItemEntry._ID + " DESC";
+                break;
+
+        }
+
+//        // Cursor containing all rows of the table
+//        data = database.query(ItemContract.ItemEntry.TABLE_NAME, projection, null, null,
+//                null, null, DEFAULT_SORT_ORDER);
 
         // Restart the LoaderManager so OnCreate can be called again with new parameters for the cursor
         getLoaderManager().restartLoader(0, null, this);
 
     }
-
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -182,8 +251,6 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-
-        Log.e("onLoadFinished", "DEFAULT_SORT_ORDER = " + DEFAULT_SORT_ORDER);
         mCursorAdapter.swapCursor(data);
     }
 
@@ -191,4 +258,6 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
     public void onLoaderReset(Loader<Cursor> loader) {
         mCursorAdapter.swapCursor(null);
     }
+
+
 }
