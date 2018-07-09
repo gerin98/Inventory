@@ -39,7 +39,6 @@ import java.text.DecimalFormat;
 
 import javax.xml.datatype.Duration;
 
-// TODO: 2018-07-08 add dialogs for deleting 
 public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     /**
@@ -66,6 +65,21 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
      * EditText field to enter the item's price
      */
     private EditText mPriceEditText;
+
+    /**
+     * EditText field for tag 1
+     */
+    private EditText mTag1EditText;
+
+    /**
+     * EditText field for tag 2
+     */
+    private EditText mTag2EditText;
+
+    /**
+     * EditText field for tag 3
+     */
+    private EditText mTag3EditText;
 
     /**
      * EditText field to enter the item's description
@@ -136,11 +150,18 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mPriceEditText = (EditText) findViewById(R.id.edit_item_price);
         mDescriptionEditText = (EditText) findViewById(R.id.edit_item_description);
         mItemImageView = (ImageView) findViewById(R.id.edit_item_image);
+        mTag1EditText = (EditText) findViewById(R.id.edit_item_tag1);
+        mTag2EditText = (EditText) findViewById(R.id.edit_item_tag2);
+        mTag3EditText = (EditText) findViewById(R.id.edit_item_tag3);
 
         mNameEditText.setOnTouchListener(mTouchListener);
         mQuantityEditText.setOnTouchListener(mTouchListener);
         mPriceEditText.setOnTouchListener(mTouchListener);
         mDescriptionEditText.setOnTouchListener(mTouchListener);
+        mTag1EditText.setOnTouchListener(mTouchListener);
+        mTag2EditText.setOnTouchListener(mTouchListener);
+        mTag3EditText.setOnTouchListener(mTouchListener);
+
 
 //        Drawable vectorDrawable = VectorDrawableCompat.create(getResources(), R.drawable.image_prompt,  this.getTheme());
         mItemBitmap = ((BitmapDrawable)getResources().getDrawable(R.drawable.image_prompt)).getBitmap();
@@ -154,6 +175,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         String quantityString = mQuantityEditText.getText().toString().trim();
         String priceString = mPriceEditText.getText().toString().trim();
         String descriptionString = mDescriptionEditText.getText().toString().trim();
+        String tag1String = mTag1EditText.getText().toString().trim();
+        String tag2String = mTag2EditText.getText().toString().trim();
+        String tag3String = mTag3EditText.getText().toString().trim();
 
         int quantityInteger = 0;
         if (!TextUtils.isEmpty(quantityString)) {
@@ -179,8 +203,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
          * temp code to insert image into database
          */
 
-//        Drawable vectorDrawable = VectorDrawableCompat.create(getResources(), R.drawable.fireworks,  this.getTheme());
-//        Bitmap bitmap = ((BitmapDrawable)getResources().getDrawable(R.drawable.fireworks)).getBitmap();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         mItemBitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
         byte[] photo = baos.toByteArray();
@@ -194,6 +216,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         values.put(ItemContract.ItemEntry.COLUMN_ITEM_QUANTITY, quantityInteger);
         values.put(ItemContract.ItemEntry.COLUMN_ITEM_PRICE, priceDouble);
         values.put(ItemContract.ItemEntry.COLUMN_ITEM_DESCRIPTION, descriptionString);
+        values.put(ItemContract.ItemEntry.COLUMN_ITEM_TAG1, tag1String);
+        values.put(ItemContract.ItemEntry.COLUMN_ITEM_TAG2, tag2String);
+        values.put(ItemContract.ItemEntry.COLUMN_ITEM_TAG3, tag3String);
         values.put(ItemContract.ItemEntry.COLUMN_ITEM_IMAGE, photo);
 
         // if URI is null, then we are adding a new item
@@ -300,6 +325,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 ItemContract.ItemEntry.COLUMN_ITEM_QUANTITY,
                 ItemContract.ItemEntry.COLUMN_ITEM_PRICE,
                 ItemContract.ItemEntry.COLUMN_ITEM_DESCRIPTION,
+                ItemContract.ItemEntry.COLUMN_ITEM_TAG1,
+                ItemContract.ItemEntry.COLUMN_ITEM_TAG2,
+                ItemContract.ItemEntry.COLUMN_ITEM_TAG3,
                 ItemContract.ItemEntry.COLUMN_ITEM_IMAGE};
 
         // This loader will execute the ContentProvider's query method on a background thread
@@ -326,6 +354,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             int quantityColumnIndex = data.getColumnIndex(ItemContract.ItemEntry.COLUMN_ITEM_QUANTITY);
             int priceColumnIndex = data.getColumnIndex(ItemContract.ItemEntry.COLUMN_ITEM_PRICE);
             int descriptionColumnIndex = data.getColumnIndex(ItemContract.ItemEntry.COLUMN_ITEM_DESCRIPTION);
+            int tag1ColumnIndex = data.getColumnIndex(ItemContract.ItemEntry.COLUMN_ITEM_TAG1);
+            int tag2ColumnIndex = data.getColumnIndex(ItemContract.ItemEntry.COLUMN_ITEM_TAG2);
+            int tag3ColumnIndex = data.getColumnIndex(ItemContract.ItemEntry.COLUMN_ITEM_TAG3);
             int imageColumnIndex = data.getColumnIndex(ItemContract.ItemEntry.COLUMN_ITEM_IMAGE);
 
 
@@ -334,6 +365,10 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             int quantity = data.getInt(quantityColumnIndex);
             double price = data.getDouble(priceColumnIndex);
             String description = data.getString(descriptionColumnIndex);
+            String tag1 = data.getString(tag1ColumnIndex);
+            String tag2 = data.getString(tag2ColumnIndex);
+            String tag3 = data.getString(tag3ColumnIndex);
+
             byte[] photo = data.getBlob(imageColumnIndex);
 
             ByteArrayInputStream imageStream = new ByteArrayInputStream(photo);
@@ -347,6 +382,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             DecimalFormat formatter = new DecimalFormat("#0.00");
             mPriceEditText.setText(formatter.format(price));
             mDescriptionEditText.setText(description);
+            mTag1EditText.setText(tag1);
+            mTag2EditText.setText(tag2);
+            mTag3EditText.setText(tag3);
             mItemImageView.setImageBitmap(theImage);
 
         }
@@ -355,10 +393,16 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         // If the loader is invalidated, clear out all the data from the input fields.
+        Bitmap tempItemBitmap = ((BitmapDrawable)getResources().getDrawable(R.drawable.image_prompt)).getBitmap();
+
         mNameEditText.setText("");
         mQuantityEditText.setText("");
         mPriceEditText.setText("");
         mDescriptionEditText.setText("");
+        mTag1EditText.setText("");
+        mTag2EditText.setText("");
+        mTag3EditText.setText("");
+        mItemImageView.setImageBitmap(tempItemBitmap);
     }
 
     private void showDeleteConfirmationDialog() {
@@ -416,6 +460,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         photoPickerIntent.setType("image/*");
         startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
