@@ -74,6 +74,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private ImageView mItemImageView;
 
     /**
+     * Bitmap of item's image
+     */
+    private static Bitmap mItemBitmap;
+
+    /**
      * Boolean flag that keeps track of whether the item has been edited (true) or not (false)
      */
     private boolean mItemHasChanged = false;
@@ -128,6 +133,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mPriceEditText.setOnTouchListener(mTouchListener);
         mDescriptionEditText.setOnTouchListener(mTouchListener);
 
+//        Drawable vectorDrawable = VectorDrawableCompat.create(getResources(), R.drawable.image_prompt,  this.getTheme());
+        mItemBitmap = ((BitmapDrawable)getResources().getDrawable(R.drawable.image_prompt)).getBitmap();
+
     }
 
     private void saveItem() {
@@ -162,10 +170,10 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
          * temp code to insert image into database
          */
 
-        Drawable vectorDrawable = VectorDrawableCompat.create(getResources(), R.drawable.fireworks,  this.getTheme());
-        Bitmap bitmap = ((BitmapDrawable)getResources().getDrawable(R.drawable.fireworks)).getBitmap();
+//        Drawable vectorDrawable = VectorDrawableCompat.create(getResources(), R.drawable.fireworks,  this.getTheme());
+//        Bitmap bitmap = ((BitmapDrawable)getResources().getDrawable(R.drawable.fireworks)).getBitmap();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        mItemBitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
         byte[] photo = baos.toByteArray();
 
         // Create a ContentValues object where column names are the keys,
@@ -395,8 +403,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 case GALLERY_REQUEST:
                     Uri selectedImage = data.getData();
                     try {
-                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
-                        mItemImageView.setImageBitmap(bitmap);
+                        mItemBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
+                        mItemImageView.setImageBitmap(mItemBitmap);
                     } catch (IOException e) {
                         Log.i("TAG", "Some exception " + e);
                     }
