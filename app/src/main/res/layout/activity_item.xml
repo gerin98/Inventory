@@ -137,35 +137,18 @@
 
                     <TextView
                         android:id="@+id/item_tag1_field"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         style="@style/TagStyle"
-                        android:background="@drawable/tag_box"
-                        android:text="Tag1"
-                        android:visibility="gone"
-                        android:textColor="@android:color/white"/>
+                        android:text="Tag1" />
 
                     <TextView
                         android:id="@+id/item_tag2_field"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        style="@style/ItemFieldStyle"
-                        android:layout_margin="8dp"
-                        android:background="@drawable/tag_box"
-                        android:text="Tag2"
-                        android:visibility="gone"
-                        android:textColor="@android:color/white"/>
+                        style="@style/TagStyle"
+                        android:text="Tag2" />
 
                     <TextView
                         android:id="@+id/item_tag3_field"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        style="@style/ItemFieldStyle"
-                        android:layout_margin="8dp"
-                        android:background="@drawable/tag_box"
-                        android:text="Tag3"
-                        android:visibility="gone"
-                        android:textColor="@android:color/white"/>
+                        style="@style/TagStyle"
+                        android:text="Tag3" />
 
                 </org.apmem.tools.layouts.FlowLayout>
 
