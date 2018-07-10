@@ -218,10 +218,52 @@ public class ItemActivity extends AppCompatActivity implements LoaderManager.Loa
             DecimalFormat formatter = new DecimalFormat("#0.00");
             priceView.setText(formatter.format(price));
             descriptionView.setText(description);
-            tag1View.setText(tag1);
-            tag2View.setText(tag2);
-            tag3View.setText(tag3);
             imageView.setImageBitmap(theImage);
+
+            // Initially no tags
+            tag1View.setVisibility(View.GONE);
+            tag2View.setVisibility(View.GONE);
+            tag3View.setVisibility(View.GONE);
+
+            // Determine which tags to fill
+            if (!tag1.isEmpty()) {
+                tag1View.setText(tag1);
+                tag1View.setVisibility(View.VISIBLE);
+
+                if (!tag2.isEmpty()) {
+                    tag2View.setText(tag2);
+                    tag2View.setVisibility(View.VISIBLE);
+
+                    if (!tag3.isEmpty()) {
+                        tag3View.setText(tag3);
+                        tag3View.setVisibility(View.VISIBLE);
+                        return;
+                    }
+                    else
+                        return;
+                } else if (!tag3.isEmpty()) {
+                    tag2View.setText(tag3);
+                    tag2View.setVisibility(View.VISIBLE);
+                    return;
+                }
+            } else if (!tag2.isEmpty()) {
+                tag1View.setText(tag2);
+                tag1View.setVisibility(View.VISIBLE);
+
+                if(!tag3.isEmpty()){
+                    tag2View.setText(tag3);
+                    tag2View.setVisibility(View.VISIBLE);
+                    return;
+                }
+                else
+                    return;
+            } else if (!tag3.isEmpty()) {
+                tag1View.setText(tag3);
+                tag1View.setVisibility(View.VISIBLE);
+                return;
+            }
+
+
 
         }
     }
@@ -233,7 +275,7 @@ public class ItemActivity extends AppCompatActivity implements LoaderManager.Loa
         getSupportActionBar().setTitle("");
 
         // default bitmap
-        Bitmap tempItemBitmap = ((BitmapDrawable)getResources().getDrawable(R.drawable.image_prompt)).getBitmap();
+        Bitmap tempItemBitmap = ((BitmapDrawable) getResources().getDrawable(R.drawable.image_prompt)).getBitmap();
 
         // Update the views on the screen with the values from the database
         quantityView.setText("");
