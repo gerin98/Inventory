@@ -65,6 +65,18 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/quantity_icon"
+                    android:tint="@color/colorAccent"
+                    android:adjustViewBounds="true"
+                    android:maxWidth="42dp"
+                    android:maxHeight="42dp"
+                    android:paddingTop="16dp"
+                    android:paddingRight="16dp"/>
+
+
                 <TextView
                     style="@style/ItemCategoryStyle"
                     android:text="In stock: " />
@@ -87,6 +99,17 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/price_icon"
+                    android:tint="@color/colorAccent"
+                    android:adjustViewBounds="true"
+                    android:maxWidth="42dp"
+                    android:maxHeight="42dp"
+                    android:paddingTop="16dp"
+                    android:paddingRight="16dp"/>
+
                 <TextView
                     style="@style/ItemCategoryStyle"
                     android:text="Price: " />
@@ -108,21 +131,52 @@
             </LinearLayout>
 
             <!-- Description field -->
-            <TextView
-                style="@style/ItemCategoryStyle"
-                android:text="Description: " />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <!-- Speech bubble icon -->
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/description_icon"
+                    android:tint="@color/colorAccent"
+                    android:adjustViewBounds="true"
+                    android:maxWidth="42dp"
+                    android:maxHeight="42dp"
+                    android:paddingTop="16dp"
+                    android:paddingRight="16dp"/>
+
+                <TextView
+                    style="@style/ItemCategoryStyle"
+                    android:text="Description: " />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/item_description_field"
-                android:paddingTop="16dp"
                 android:paddingBottom="16dp"
-                style="@style/ItemFieldStyle" />
+                style="@style/ItemFieldStyle"
+                android:paddingLeft="42dp"/>
 
             <!-- Tags field -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
+                <!-- Speech bubble icon -->
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/tag_icon"
+                    android:tint="@color/colorAccent"
+                    android:adjustViewBounds="true"
+                    android:maxWidth="42dp"
+                    android:maxHeight="42dp"
+                    android:paddingTop="16dp"
+                    android:paddingRight="16dp"/>
 
                 <TextView
                     style="@style/ItemCategoryStyle"
@@ -153,8 +207,6 @@
                 </org.apmem.tools.layouts.FlowLayout>
 
             </LinearLayout>
-
-
 
         </LinearLayout>
 
