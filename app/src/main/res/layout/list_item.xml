@@ -46,13 +46,25 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/quantity_icon"
+                        android:tint="@color/colorAccent"
+                        android:adjustViewBounds="true"
+                        android:maxWidth="32dp"
+                        android:maxHeight="32dp"
+                        android:paddingBottom="8dp"
+                        android:paddingRight="16dp"/>
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/cardview_quantity_label"
                         android:fontFamily="sans-serif"
                         android:textAppearance="?android:textAppearanceSmall"
-                        android:textColor="#AEB6BD"/>
+                        android:textColor="#AEB6BD"
+                        android:paddingBottom="8dp"/>
 
                     <TextView
                         android:id="@+id/quantity"
@@ -60,7 +72,8 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif"
                         android:textAppearance="?android:textAppearanceSmall"
-                        android:textColor="#AEB6BD" />
+                        android:textColor="#AEB6BD"
+                        android:paddingBottom="8dp"/>
 
                 </LinearLayout>
 
@@ -69,6 +82,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/price_icon"
+                        android:tint="@color/colorAccent"
+                        android:adjustViewBounds="true"
+                        android:maxWidth="32dp"
+                        android:maxHeight="32dp"
+                        android:paddingRight="16dp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
