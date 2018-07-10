@@ -19,7 +19,8 @@
             android:layout_height="0dp"
             android:layout_weight="0.4"
             android:scaleType="centerCrop"
-            android:src="@drawable/image_prompt"/>
+            android:src="@drawable/image_prompt"
+            android:clickable="true"/>
 
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"

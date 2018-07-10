@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.gerin.inventory">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/inventory_logo"
@@ -16,25 +18,25 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter></activity>
+            </intent-filter>
+        </activity>
         <activity
             android:name=".CatalogActivity"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".EditorActivity"
-            android:parentActivityName=".CatalogActivity"></activity>
+            android:parentActivityName=".CatalogActivity" />
         <activity
             android:name=".ItemActivity"
             android:parentActivityName=".CatalogActivity"
-            android:theme="@style/noTitle"
-            ></activity>
-        <provider
-            android:authorities="com.example.gerin.inventory"
-            android:name=".data.ItemProvider"
-            android:exported="false"/>
-    </application>
+            android:theme="@style/noTitle" />
 
-    <uses-permission
-        android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+        <provider
+            android:name=".data.ItemProvider"
+            android:authorities="com.example.gerin.inventory"
+            android:exported="false" />
+
+        <activity android:name=".ImageActivity"></activity>
+    </application>
 
 </manifest>

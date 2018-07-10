@@ -167,6 +167,13 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 //        Drawable vectorDrawable = VectorDrawableCompat.create(getResources(), R.drawable.image_prompt,  this.getTheme());
         mItemBitmap = ((BitmapDrawable)getResources().getDrawable(R.drawable.image_prompt)).getBitmap();
 
+        mItemImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("editor","image clicked");
+            }
+        });
+
     }
 
     private void saveItem() {
