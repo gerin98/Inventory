@@ -54,7 +54,7 @@
                         android:adjustViewBounds="true"
                         android:maxWidth="32dp"
                         android:maxHeight="32dp"
-                        android:paddingBottom="8dp"
+                        android:paddingTop="4dp"
                         android:paddingRight="16dp"/>
 
                     <TextView
@@ -64,7 +64,7 @@
                         android:fontFamily="sans-serif"
                         android:textAppearance="?android:textAppearanceSmall"
                         android:textColor="#AEB6BD"
-                        android:paddingBottom="8dp"/>
+                        />
 
                     <TextView
                         android:id="@+id/quantity"
@@ -73,7 +73,7 @@
                         android:fontFamily="sans-serif"
                         android:textAppearance="?android:textAppearanceSmall"
                         android:textColor="#AEB6BD"
-                        android:paddingBottom="8dp"/>
+                        />
 
                 </LinearLayout>
 
@@ -91,6 +91,7 @@
                         android:adjustViewBounds="true"
                         android:maxWidth="32dp"
                         android:maxHeight="32dp"
+                        android:paddingTop="4dp"
                         android:paddingRight="16dp"/>
 
                     <TextView

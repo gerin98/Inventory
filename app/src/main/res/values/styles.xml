@@ -85,10 +85,9 @@
     <style name="TagStyle">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:fontFamily">sans-serif-light</item>
-        <item name="android:paddingTop">16dp</item>
+        <item name="android:fontFamily">sans-serif</item>
         <item name="android:textAppearance">?android:textAppearanceMedium</item>
-        <item name="android:layout_margin">8dp</item>
+        <item name="android:layout_margin">4dp</item>
         <item name="android:visibility">gone</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:background">@drawable/tag_box</item>

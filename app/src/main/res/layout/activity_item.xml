@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -195,16 +196,19 @@
                     <TextView
                         android:id="@+id/item_tag1_field"
                         style="@style/TagStyle"
+                        android:gravity="center"
                         android:text="Tag1" />
 
                     <TextView
                         android:id="@+id/item_tag2_field"
                         style="@style/TagStyle"
+                        android:gravity="center"
                         android:text="Tag2" />
 
                     <TextView
                         android:id="@+id/item_tag3_field"
                         style="@style/TagStyle"
+                        android:gravity="center"
                         android:text="Tag3" />
 
                 </org.apmem.tools.layouts.FlowLayout>
