@@ -114,11 +114,18 @@ public class ItemContract {
         public final static String COLUMN_ITEM_TAG3 = "tag3";
 
         /**
-         * Third tag for the item.
+         * Image for the item.
          *
          * Type: BLOB
          */
         public final static String COLUMN_ITEM_IMAGE = "image";
+
+        /**
+         * URI for the image
+         *
+         * Type: TEXT
+         */
+        public final static String COLUMN_ITEM_URI = "imageuri";
 
     }
 

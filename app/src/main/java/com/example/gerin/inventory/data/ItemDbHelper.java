@@ -42,7 +42,9 @@ public class ItemDbHelper extends SQLiteOpenHelper{
                 + ItemEntry.COLUMN_ITEM_TAG1 + " TEXT, "
                 + ItemEntry.COLUMN_ITEM_TAG2 + " TEXT, "
                 + ItemEntry.COLUMN_ITEM_TAG3 + " TEXT, "
-                + ItemEntry.COLUMN_ITEM_IMAGE + " BLOB);";
+                + ItemEntry.COLUMN_ITEM_IMAGE + " BLOB, "
+                + ItemEntry.COLUMN_ITEM_URI + " TEXT); ";
+
 
         // Execute the SQL statement
         db.execSQL(SQL_CREATE_ITEMS_TABLE);

@@ -1,6 +1,7 @@
 package com.example.gerin.inventory;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.LoaderManager;
 import android.content.ContentValues;
 import android.content.CursorLoader;
@@ -112,6 +113,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
      */
     private static final int FIVE_MB = 5000000;
 
+    /**
+     * URI of selected image
+     */
+    private Uri selectedImage = null;
+
     private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -163,14 +169,17 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mTag2EditText.setOnTouchListener(mTouchListener);
         mTag3EditText.setOnTouchListener(mTouchListener);
 
-
-//        Drawable vectorDrawable = VectorDrawableCompat.create(getResources(), R.drawable.image_prompt,  this.getTheme());
         mItemBitmap = ((BitmapDrawable)getResources().getDrawable(R.drawable.image_prompt)).getBitmap();
 
         mItemImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("editor","image clicked");
+                Dialog d = new Dialog(EditorActivity.this);
+                d.setContentView(R.layout.custom_dialog);
+                ImageView image_full = (ImageView) d.findViewById(R.id.image_full);
+                if(mItemBitmap != null)
+                    image_full.setImageBitmap(mItemBitmap);
+                d.show();
             }
         });
 
@@ -186,6 +195,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         String tag1String = mTag1EditText.getText().toString().trim();
         String tag2String = mTag2EditText.getText().toString().trim();
         String tag3String = mTag3EditText.getText().toString().trim();
+        String imageUri;
+        if(selectedImage == null)
+            imageUri = "null";
+        else
+            imageUri = selectedImage.toString();     // may cause error since default is null
 
         int quantityInteger = 0;
         if (!TextUtils.isEmpty(quantityString)) {
@@ -197,19 +211,16 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             priceDouble = Double.parseDouble(priceString);
         }
 
-// TODO: 2018-07-08 check for blank inputs in edit mode
-//        // Check if this is supposed to be a new pet
-//        // and check if all the fields in the editor are blank
-//        if (mCurrentItemUri == null &&
-//                TextUtils.isEmpty(nameString) && TextUtils.isEmpty(breedString) &&
-//                TextUtils.isEmpty(weightString) && mGender == PetEntry.GENDER_UNKNOWN) {
-//            // Since no fields were modified, we can return early without creating a new pet.
-//            // No need to create ContentValues and no need to do any ContentProvider operations.
-//            return;
-//        }
-        /**
-         * temp code to insert image into database
-         */
+        // TODO: 2018-07-08 check for blank inputs in edit mode
+        //        // Check if this is supposed to be a new pet
+        //        // and check if all the fields in the editor are blank
+        //        if (mCurrentItemUri == null &&
+        //                TextUtils.isEmpty(nameString) && TextUtils.isEmpty(breedString) &&
+        //                TextUtils.isEmpty(weightString) && mGender == PetEntry.GENDER_UNKNOWN) {
+        //            // Since no fields were modified, we can return early without creating a new pet.
+        //            // No need to create ContentValues and no need to do any ContentProvider operations.
+        //            return;
+        //        }
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         mItemBitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
@@ -228,6 +239,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         values.put(ItemContract.ItemEntry.COLUMN_ITEM_TAG2, tag2String);
         values.put(ItemContract.ItemEntry.COLUMN_ITEM_TAG3, tag3String);
         values.put(ItemContract.ItemEntry.COLUMN_ITEM_IMAGE, photo);
+        values.put(ItemContract.ItemEntry.COLUMN_ITEM_URI, imageUri);
 
         // if URI is null, then we are adding a new item
         if (mCurrentItemUri == null) {
@@ -336,7 +348,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 ItemContract.ItemEntry.COLUMN_ITEM_TAG1,
                 ItemContract.ItemEntry.COLUMN_ITEM_TAG2,
                 ItemContract.ItemEntry.COLUMN_ITEM_TAG3,
-                ItemContract.ItemEntry.COLUMN_ITEM_IMAGE};
+                ItemContract.ItemEntry.COLUMN_ITEM_IMAGE,
+                ItemContract.ItemEntry.COLUMN_ITEM_URI};
 
         // This loader will execute the ContentProvider's query method on a background thread
         return new CursorLoader(this,   // Parent activity context
@@ -366,6 +379,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             int tag2ColumnIndex = data.getColumnIndex(ItemContract.ItemEntry.COLUMN_ITEM_TAG2);
             int tag3ColumnIndex = data.getColumnIndex(ItemContract.ItemEntry.COLUMN_ITEM_TAG3);
             int imageColumnIndex = data.getColumnIndex(ItemContract.ItemEntry.COLUMN_ITEM_IMAGE);
+            int uriColumnIndex = data.getColumnIndex(ItemContract.ItemEntry.COLUMN_ITEM_URI);
 
 
             // Extract out the value from the Cursor for the given column index
@@ -376,13 +390,12 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             String tag1 = data.getString(tag1ColumnIndex);
             String tag2 = data.getString(tag2ColumnIndex);
             String tag3 = data.getString(tag3ColumnIndex);
-
             byte[] photo = data.getBlob(imageColumnIndex);
+            String imageURI = data.getString(uriColumnIndex);
 
             ByteArrayInputStream imageStream = new ByteArrayInputStream(photo);
             Bitmap theImage = BitmapFactory.decodeStream(imageStream);
 
-            mItemBitmap = theImage;
 
             // Update the views on the screen with the values from the database
             mNameEditText.setText(name);
@@ -394,6 +407,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             mTag2EditText.setText(tag2);
             mTag3EditText.setText(tag3);
             mItemImageView.setImageBitmap(theImage);
+            mItemBitmap = theImage;
+            if(imageURI == "null")
+                selectedImage = null;
+            else
+                selectedImage = Uri.parse(imageURI);
 
         }
     }
@@ -411,6 +429,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mTag2EditText.setText("");
         mTag3EditText.setText("");
         mItemImageView.setImageBitmap(tempItemBitmap);
+        selectedImage = null;
     }
 
     private void showDeleteConfirmationDialog() {
@@ -475,16 +494,20 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         if(resultCode == Activity.RESULT_OK)
             switch (requestCode){
                 case GALLERY_REQUEST:
-                    Uri selectedImage = data.getData();
+                    selectedImage = data.getData();
+                    Log.e("editor activity", selectedImage.toString());
                     try {
                         mItemBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
                         int i = mItemBitmap.getAllocationByteCount();
-                        if(mItemBitmap.getAllocationByteCount() < FIVE_MB) {
+                        // if less than 5MB set the image
+                        if(i < FIVE_MB) {
                             mItemImageView.setImageBitmap(mItemBitmap);
                             Log.e("Editor Activity", "successfully converted image");
                         }
+                        // otherwise keep the default image
                         else{
                             mItemBitmap = ((BitmapDrawable)getResources().getDrawable(R.drawable.image_prompt)).getBitmap();
+                            selectedImage = null;
                             Log.e("Editor Activity", "image too large");
                             Toast.makeText(this,"Image too large", Toast.LENGTH_SHORT).show();
                         }
