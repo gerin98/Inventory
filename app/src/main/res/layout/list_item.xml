@@ -54,7 +54,7 @@
                         android:adjustViewBounds="true"
                         android:maxWidth="32dp"
                         android:maxHeight="32dp"
-                        android:paddingTop="2dp"
+                        android:paddingTop="4dp"
                         android:paddingRight="16dp"/>
 
                     <TextView
@@ -91,7 +91,7 @@
                         android:adjustViewBounds="true"
                         android:maxWidth="32dp"
                         android:maxHeight="32dp"
-                        android:paddingTop="2dp"
+                        android:paddingTop="4dp"
                         android:paddingRight="16dp"/>
 
                     <TextView
