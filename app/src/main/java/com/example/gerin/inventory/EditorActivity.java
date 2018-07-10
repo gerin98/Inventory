@@ -39,6 +39,7 @@ import java.text.DecimalFormat;
 
 import javax.xml.datatype.Duration;
 
+// TODO: 2018-07-09 if user clicks save twice two copies are saved
 public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     /**
