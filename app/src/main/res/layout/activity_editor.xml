@@ -180,7 +180,9 @@
         android:clickable="true"
         android:tint="@color/white"
         android:onClick="insertImage"
-        app:srcCompat="@android:drawable/ic_menu_camera"
+        app:srcCompat="@drawable/camera_icon"
+        android:maxWidth="48dp"
+        android:maxHeight="48dp"
         app:layout_anchor="@id/edit_item_image"
         app:layout_anchorGravity="bottom|right|end"/>
 
