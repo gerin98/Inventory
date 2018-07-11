@@ -182,12 +182,14 @@
                     android:paddingTop="16dp"
                     android:paddingRight="16dp"/>
 
+                <!-- Tags label -->
                 <TextView
                     style="@style/ItemCategoryStyle"
                     android:paddingBottom="16dp"
                     android:paddingRight="16dp"
                     android:text="Tags: " />
 
+                <!-- Tags -->
                 <org.apmem.tools.layouts.FlowLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
