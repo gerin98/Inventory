@@ -22,6 +22,7 @@
             android:src="@drawable/image_prompt"
             android:clickable="true"/>
 
+        <!-- Contains the text fields -->
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -54,19 +55,32 @@
                         android:paddingLeft="4dp">
 
                         <!-- Name field -->
-                        <EditText
-                            android:id="@+id/edit_item_name"
-                            style="@style/EditorFieldStyle"
-                            android:hint="@string/hint_item_name"
-                            android:inputType="textCapWords" />
+                        <android.support.design.widget.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <android.support.design.widget.TextInputEditText
+                                android:id="@+id/edit_item_name"
+                                style="@style/EditorFieldStyle"
+                                android:hint="@string/hint_item_name"
+                                android:inputType="textCapWords"/>
+
+                        </android.support.design.widget.TextInputLayout>
 
                         <!-- Quantity field -->
-                        <EditText
-                            android:id="@+id/edit_item_quantity"
-                            style="@style/EditorFieldStyle"
-                            android:hint="@string/hint_item_quantity"
-                            android:inputType="number" />
+                        <android.support.design.widget.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
 
+                            <android.support.design.widget.TextInputEditText
+                                android:id="@+id/edit_item_quantity"
+                                style="@style/EditorFieldStyle"
+                                android:hint="@string/hint_item_quantity"
+                                android:inputType="numberSigned"/>
+
+                        </android.support.design.widget.TextInputLayout>
+
+                        <!-- Price field -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -79,12 +93,18 @@
                                 android:layout_weight="1"
                                 android:text="@string/dollarSign" />
 
-                            <!-- Price field -->
-                            <EditText
-                                android:id="@+id/edit_item_price"
-                                style="@style/EditorFieldStylePrice"
-                                android:hint="@string/hint_item_price"
-                                android:inputType="numberDecimal" />
+                            <android.support.design.widget.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <android.support.design.widget.TextInputEditText
+                                    android:id="@+id/edit_item_price"
+                                    style="@style/EditorFieldStyle"
+                                    android:hint="@string/hint_item_price"
+                                    android:inputType="numberDecimal"/>
+
+                            </android.support.design.widget.TextInputLayout>
+
 
                         </LinearLayout>
 
