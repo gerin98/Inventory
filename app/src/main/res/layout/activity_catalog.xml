@@ -10,8 +10,7 @@
     <!-- This layout contains all the views -->
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
         <!-- Listview shows all available items -->
         <ListView
@@ -20,6 +19,7 @@
             android:layout_height="wrap_content"
             android:divider="@null"
             android:dividerHeight="0dp"
+            android:layout_below="@+id/search_bar1"
             ></ListView>
 
         <!-- Empty view for the list -->
@@ -74,6 +74,19 @@
             app:layout_anchor="@id/app_bar_layout"
             app:layout_anchorGravity="bottom|right|end"
             app:srcCompat="@android:drawable/ic_input_add" />
+
+        <!-- Search bar -->
+        <com.mancj.materialsearchbar.MaterialSearchBar
+            android:id="@+id/search_bar1"
+            android:layout_alignParentTop="true"
+            android:layout_margin="16dp"
+            app:mt_speechMode="false"
+            app:mt_hint="Search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+
 
     </RelativeLayout>
 

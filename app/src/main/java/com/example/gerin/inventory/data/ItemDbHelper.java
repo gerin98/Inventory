@@ -1,12 +1,18 @@
 package com.example.gerin.inventory.data;
 
+import android.content.ClipData;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 
+import com.example.gerin.inventory.Search.SearchResult;
 import com.example.gerin.inventory.data.ItemContract.ItemEntry;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ItemDbHelper extends SQLiteOpenHelper{
 
@@ -21,10 +27,18 @@ public class ItemDbHelper extends SQLiteOpenHelper{
     private static final int DATABASE_VERSION = 1;
 
     /**
+     * Context
+     */
+
+    Context context;
+
+    /**
      * Constructs a new instance of ItemDbHelper
      */
     public ItemDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+
+        this.context = context;
     }
 
 
@@ -62,4 +76,79 @@ public class ItemDbHelper extends SQLiteOpenHelper{
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.e("ItemDbHelper","inside onUpgrade");
     }
+
+    // Function to get the search results
+    public List<SearchResult> getResult(){
+
+        String[] projection = {
+                ItemContract.ItemEntry._ID,
+                ItemContract.ItemEntry.COLUMN_ITEM_NAME,
+                ItemContract.ItemEntry.COLUMN_ITEM_QUANTITY,
+                ItemContract.ItemEntry.COLUMN_ITEM_PRICE};
+
+        Cursor cursor = context.getContentResolver().query(ItemEntry.CONTENT_URI, projection, null, null,null);
+
+        List<SearchResult> searchResults = new ArrayList<>();
+        if(cursor.moveToFirst()){
+            do{
+                SearchResult result = new SearchResult();
+                result.setId( cursor.getInt( cursor.getColumnIndex( ItemEntry._ID ) ) );
+                result.setName( cursor.getString( cursor.getColumnIndex( ItemEntry.COLUMN_ITEM_NAME ) ) );
+                result.setQuantity( cursor.getDouble( cursor.getColumnIndex( ItemEntry.COLUMN_ITEM_QUANTITY ) ) );
+                result.setPrice( cursor.getDouble( cursor.getColumnIndex( ItemEntry.COLUMN_ITEM_PRICE ) ) );
+
+                searchResults.add(result);
+            }while(cursor.moveToNext());
+        }
+
+        return searchResults;
+    }
+
+    public List<String> getName(){
+
+        String[] projection = {
+                ItemContract.ItemEntry.COLUMN_ITEM_NAME};
+
+        Cursor cursor = context.getContentResolver().query(ItemEntry.CONTENT_URI, projection, null, null,null);
+
+        List<String> searchResults = new ArrayList<>();
+        if(cursor.moveToFirst()){
+            do{
+                searchResults.add( cursor.getString( cursor.getColumnIndex( ItemEntry.COLUMN_ITEM_NAME ) ) );
+            }while(cursor.moveToNext());
+        }
+
+        return searchResults;
+    }
+
+    public List<SearchResult> getResultNames(String name){
+
+        String[] projection = {
+                ItemContract.ItemEntry._ID,
+                ItemContract.ItemEntry.COLUMN_ITEM_NAME,
+                ItemContract.ItemEntry.COLUMN_ITEM_QUANTITY,
+                ItemContract.ItemEntry.COLUMN_ITEM_PRICE};
+
+        String selection = ItemEntry.COLUMN_ITEM_NAME + " LIKE ?";
+        String[] selectionArgs = new String[] {"&" + name + "%"};
+        String[] selectionArgs2 = new String[] {name};
+
+        Cursor cursor = context.getContentResolver().query(ItemEntry.CONTENT_URI, projection, selection, selectionArgs2,null);
+
+        List<SearchResult> searchResults = new ArrayList<>();
+        if(cursor.moveToFirst()){
+            do{
+                SearchResult result = new SearchResult();
+                result.setId( cursor.getInt( cursor.getColumnIndex( ItemEntry._ID ) ) );
+                result.setName( cursor.getString( cursor.getColumnIndex( ItemEntry.COLUMN_ITEM_NAME ) ) );
+                result.setQuantity( cursor.getDouble( cursor.getColumnIndex( ItemEntry.COLUMN_ITEM_QUANTITY ) ) );
+                result.setPrice( cursor.getDouble( cursor.getColumnIndex( ItemEntry.COLUMN_ITEM_PRICE ) ) );
+
+                searchResults.add(result);
+            }while(cursor.moveToNext());
+        }
+
+        return searchResults;
+    }
+
 }

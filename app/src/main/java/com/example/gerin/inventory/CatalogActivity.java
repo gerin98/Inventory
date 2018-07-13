@@ -10,10 +10,16 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.ListViewCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,8 +27,17 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.gerin.inventory.Search.CustomSuggestionsAdapter;
+import com.example.gerin.inventory.Search.SearchAdapter;
+import com.example.gerin.inventory.Search.SearchResult;
 import com.example.gerin.inventory.data.ItemContract;
 import com.example.gerin.inventory.data.ItemDbHelper;
+import com.mancj.materialsearchbar.MaterialSearchBar;
+import com.mancj.materialsearchbar.adapter.SuggestionsAdapter;
+
+
+import java.util.ArrayList;
+import java.util.List;
 
 // TODO: 2018-07-08 add "tags" fields to the database
 public class CatalogActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -72,10 +87,148 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
      */
     private static int sort_choice = 2;
 
+
+    RecyclerView recyclerView;
+    RecyclerView.LayoutManager layoutManager;
+    SearchAdapter adapter;
+
+    MaterialSearchBar materialSearchBar;
+    CustomSuggestionsAdapter customSuggestionsAdapter;
+
+    List<String> suggestList = new ArrayList<>();
+    List<SearchResult> searchResultList = new ArrayList<>();
+
+    ItemDbHelper database;
+
+    public int flag1 = 0;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        Log.e("catalog", "onStart");
+//        materialSearchBar.clearSuggestions();
+//        materialSearchBar.disableSearch();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        Log.e("catalog", "onResume");
+        flag1 = 0;
+        loadSearchResultList();
+        customSuggestionsAdapter.setSuggestions(searchResultList);
+//        materialSearchBar.clearSuggestions();
+//        materialSearchBar.disableSearch();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        Log.e("catalog", "onPause");
+        materialSearchBar.clearSuggestions();
+        materialSearchBar.disableSearch();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_catalog);
+
+        // Create a new instance of the database for access to the searchbar
+        database = new ItemDbHelper(this);
+
+        // Create the search bar
+        materialSearchBar = (MaterialSearchBar) findViewById(R.id.search_bar1);
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        customSuggestionsAdapter = new CustomSuggestionsAdapter(inflater);
+
+        if (flag1 == 0) {
+            Log.e("catalog", "tried to set adapter");
+            loadSearchResultList();
+            customSuggestionsAdapter.setSuggestions(searchResultList);
+            materialSearchBar.setCustomSuggestionAdapter(customSuggestionsAdapter);
+//          ^---- this line causes problems when starting a new intent
+        }
+
+        materialSearchBar.addTextChangeListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                materialSearchBar.enableSearch();
+                if (flag1 == 0) {
+//                    List<SearchResult> newSuggestions = loadNewSearchResultList();
+//                    customSuggestionsAdapter.setSuggestions(newSuggestions);
+//                    materialSearchBar.setCustomSuggestionAdapter(customSuggestionsAdapter);
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        materialSearchBar.setOnSearchActionListener(new MaterialSearchBar.OnSearchActionListener() {
+            @Override
+            public void onSearchStateChanged(boolean enabled) {
+//                if (!enabled)
+//                    adapter = new SearchAdapter(getBaseContext(), database.getResult());
+////                    recyclerView.setAdapter(null);i
+//                if(enabled) {
+//                    materialSearchBar.enableSearch();
+//                    materialSearchBar.setCustomSuggestionAdapter(customSuggestionsAdapter);
+//                }
+//                else {
+//                    materialSearchBar.clearSuggestions();
+//                    materialSearchBar.disableSearch();
+//                }
+            }
+
+            @Override
+            public void onSearchConfirmed(CharSequence text) {
+//                startSearch(text.toString());
+//                Log.e("catalog", "search confirmed");
+////                recyclerView.setAdapter(adapter);
+////                materialSearchBar.disableSearch();
+            }
+
+            @Override
+            public void onButtonClicked(int buttonCode) {
+
+//                recyclerView.setAdapter(null);
+
+                switch (buttonCode) {
+                    case MaterialSearchBar.BUTTON_NAVIGATION:
+                        Log.e("catalog", "button clicked");
+                        materialSearchBar.clearSuggestions();
+                        materialSearchBar.disableSearch();
+                        break;
+                    case MaterialSearchBar.BUTTON_SPEECH:
+                        break;
+                    default:
+                        break;
+
+                }
+            }
+        });
+        materialSearchBar.setSuggstionsClickListener(new SuggestionsAdapter.OnItemViewClickListener() {
+            @Override
+            public void OnItemClickListener(int position, View v) {
+
+            }
+
+            @Override
+            public void OnItemDeleteListener(int position, View v) {
+
+            }
+        });
 
         // Find the ListView which will be populated with the pet data
         ListView itemListView = (ListView) findViewById(R.id.catalog_list);
@@ -115,7 +268,12 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
                 Uri currentPetUri = ContentUris.withAppendedId(ItemContract.ItemEntry.CONTENT_URI, id);
                 // Set the URI on the data field of the intent
                 intent.setData(currentPetUri);
-                // Launch the {@link EditorActivity} to display the data for the current pet.
+
+                Log.e("catalog", "list item click");
+                flag1 = 1;
+                materialSearchBar.clearSuggestions();
+                materialSearchBar.disableSearch();
+
                 startActivity(intent);
             }
         });
@@ -125,13 +283,37 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 
     }
 
+    private void startSearch(String s) {
+
+        adapter = new SearchAdapter(this, database.getResultNames(s));
+    }
+
+    private void loadSearchResultList() {
+        searchResultList = database.getResult();
+    }
+
+    private List<SearchResult> loadNewSearchResultList() {
+        List<SearchResult> newSuggestions = new ArrayList<>();
+        loadSearchResultList();
+        for (SearchResult searchResult : searchResultList) {
+            if (searchResult.getName().toLowerCase().contains(materialSearchBar.getText().toLowerCase())) {
+                newSuggestions.add(searchResult);
+            }
+        }
+
+        return newSuggestions;
+
+    }
+
     /* Methods to create menu */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu options from the res/menu/menu_catalog.xml file.
         // This adds menu items to the app bar.
         getMenuInflater().inflate(R.menu.menu_catalog, menu);
+
         return true;
+
     }
 
     @Override
@@ -141,7 +323,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
             // Respond to a click on the "Delete all entries" menu option
             case R.id.action_delete_all_entries:
                 // delete entries
-               showDeleteAllConfirmationDialog();
+                showDeleteAllConfirmationDialog();
                 return true;
             case R.id.action_sort_all_entries:
                 // sort entries
