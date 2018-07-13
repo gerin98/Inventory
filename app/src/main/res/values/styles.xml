@@ -93,6 +93,10 @@
         <item name="android:background">@drawable/tag_box</item>
     </style>
 
+    <style name="SearchBarTheme" parent="MaterialSearchBarLight">
+        <item name="mt_dividerColor">@color/dark_blue</item>
+        <item name="mt_searchBarColor">@color/misty_rose</item>
+    </style>
 
 
 

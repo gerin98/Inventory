@@ -78,12 +78,15 @@
         <!-- Search bar -->
         <com.mancj.materialsearchbar.MaterialSearchBar
             android:id="@+id/search_bar1"
+            style="@style/SearchBarTheme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_margin="16dp"
             app:mt_speechMode="false"
-            app:mt_hint="Search"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            app:mt_hint="Type to search"
+            app:mt_placeholder="Search"
+            />
 
 
 

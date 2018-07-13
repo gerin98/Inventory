@@ -127,6 +127,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
     protected void onPause() {
         super.onPause();
 
+        flag1 = 1;
         Log.e("catalog", "onPause");
         materialSearchBar.clearSuggestions();
         materialSearchBar.disableSearch();
@@ -142,6 +143,8 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 
         // Create the search bar
         materialSearchBar = (MaterialSearchBar) findViewById(R.id.search_bar1);
+//        materialSearchBar.setCardViewElevation(64);
+//        materialSearchBar.setMenuDividerEnabled(false);
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         customSuggestionsAdapter = new CustomSuggestionsAdapter(inflater);
 
@@ -163,8 +166,8 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 //                materialSearchBar.enableSearch();
                 if (flag1 == 0) {
-//                    List<SearchResult> newSuggestions = loadNewSearchResultList();
-//                    customSuggestionsAdapter.setSuggestions(newSuggestions);
+                    List<SearchResult> newSuggestions = loadNewSearchResultList();
+                    customSuggestionsAdapter.setSuggestions(newSuggestions);
 //                    materialSearchBar.setCustomSuggestionAdapter(customSuggestionsAdapter);
                 }
 
