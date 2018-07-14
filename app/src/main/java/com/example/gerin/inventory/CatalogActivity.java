@@ -453,11 +453,11 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         // Sort order
         switch (choice) {
             case ASCENDING:
-                DEFAULT_SORT_ORDER = ItemContract.ItemEntry.COLUMN_ITEM_NAME + " ASC";
+                DEFAULT_SORT_ORDER = ItemContract.ItemEntry.COLUMN_ITEM_NAME + " COLLATE NOCASE ASC"; 
                 sort_choice = 0;
                 break;
             case DESCENDING:
-                DEFAULT_SORT_ORDER = ItemContract.ItemEntry.COLUMN_ITEM_NAME + " DESC";
+                DEFAULT_SORT_ORDER = ItemContract.ItemEntry.COLUMN_ITEM_NAME + " COLLATE NOCASE DESC";
                 sort_choice = 1;
                 break;
             case OLDEST_FIRST:
