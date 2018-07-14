@@ -161,7 +161,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         materialSearchBar.addTextChangeListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+//                materialSearchBar.disableSearch();
             }
 
             @Override
@@ -174,7 +174,13 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 
             @Override
             public void afterTextChanged(Editable s) {
-
+//                if (flag1 == 0) {
+//                    if (!materialSearchBar.isSuggestionsVisible()) {
+//                        if (s.toString() != null && !s.toString().isEmpty()) {
+//                            materialSearchBar.enableSearch();
+//                        }
+//                    }
+//                }
             }
         });
         // Useless
@@ -192,14 +198,49 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 //                    materialSearchBar.clearSuggestions();
 //                    materialSearchBar.disableSearch();
 //                }
+//                if (flag1 == 0) {
+//                    if (enabled)
+//                        materialSearchBar.showSuggestionsList();
+//                }
+
             }
 
             @Override
             public void onSearchConfirmed(CharSequence text) {
-//                startSearch(text.toString());
-//                Log.e("catalog", "search confirmed");
-////                recyclerView.setAdapter(adapter);
-////                materialSearchBar.disableSearch();
+
+                List<SearchResult> testResult1 = loadNewSearchResultList();
+                if(testResult1.isEmpty()) {
+                    Toast.makeText(getBaseContext(), "No Results Found",
+                            Toast.LENGTH_LONG).show();
+                    return;
+                }
+                SearchResult testResult2 = testResult1.get(0);
+                String testResult4 = testResult2.getName();
+                int testResult3 = testResult2.getId();
+
+                if(text.toString().toLowerCase().equals(testResult4.toLowerCase())){
+//                    Toast.makeText(getBaseContext(), "Search Success!",
+//                            Toast.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(CatalogActivity.this, ItemActivity.class);
+
+                    Uri currentPetUri = ContentUris.withAppendedId(ItemContract.ItemEntry.CONTENT_URI, testResult3);
+                    // Set the URI on the data field of the intent
+                    intent.setData(currentPetUri);
+
+                    flag1 = 1;
+                    materialSearchBar.clearSuggestions();
+                    // probably dont need this line
+                    materialSearchBar.disableSearch();
+
+                    startActivity(intent);
+
+                }
+                else{
+                    Toast.makeText(getBaseContext(), "No Results Found",
+                            Toast.LENGTH_LONG).show();
+                }
+
             }
 
             @Override
@@ -226,13 +267,13 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 
             @Override
             public void OnItemClickListener(int position, View v) {
-                Log.e("catalog","on item click");
+                Log.e("catalog", "on item click");
                 Log.e("on item click", String.valueOf(position));
             }
 
             @Override
             public void OnItemDeleteListener(int position, View v) {
-                Log.e("catalog","on item delete");
+                Log.e("catalog", "on item delete");
             }
         });
 
@@ -357,7 +398,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
                 i++;
 
 //                MySuggestions.newSuggestions_id.add(1);
-                Log.d("_id",String.valueOf(searchResult.getId()));
+                Log.d("_id", String.valueOf(searchResult.getId()));
             }
         }
 
