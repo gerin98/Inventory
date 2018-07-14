@@ -15,6 +15,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.design.widget.FloatingActionButton;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
@@ -99,6 +100,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     public Bitmap mItemBitmap;
 
     /**
+     * Camera FAB
+     */
+    public FloatingActionButton fab;
+
+    /**
      * Boolean flag that keeps track of whether the item has been edited (true) or not (false)
      */
     private boolean mItemHasChanged = false;
@@ -160,6 +166,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mTag1EditText = (EditText) findViewById(R.id.edit_item_tag1);
         mTag2EditText = (EditText) findViewById(R.id.edit_item_tag2);
         mTag3EditText = (EditText) findViewById(R.id.edit_item_tag3);
+        fab = (FloatingActionButton) findViewById(R.id.floatingActionButton);
 
         mNameEditText.setOnTouchListener(mTouchListener);
         mQuantityEditText.setOnTouchListener(mTouchListener);
@@ -168,6 +175,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mTag1EditText.setOnTouchListener(mTouchListener);
         mTag2EditText.setOnTouchListener(mTouchListener);
         mTag3EditText.setOnTouchListener(mTouchListener);
+        fab.setOnTouchListener(mTouchListener);
 
         mItemBitmap = ((BitmapDrawable)getResources().getDrawable(R.drawable.image_prompt)).getBitmap();
 

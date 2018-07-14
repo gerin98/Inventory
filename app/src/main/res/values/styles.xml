@@ -93,6 +93,12 @@
         <item name="android:background">@drawable/tag_box</item>
     </style>
 
+    <style name="SearchBarTheme" parent="MaterialSearchBarLight">
+        <item name="mt_dividerColor">@color/dodger_blue</item>
+        <item name="mt_searchIconTint">@color/dodger_blue</item>
+        <item name="mt_placeholderColor">@color/dodger_blue</item>
+        <item name="mt_textCursorTint">@color/dodger_blue</item>
+    </style>
 
 
 

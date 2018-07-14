@@ -3,16 +3,19 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CatalogActivity">
+    tools:context=".CatalogActivity"
+    android:background="@color/white_smoke">
+
 
     <!-- This layout contains all the views -->
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
+        <!--android:layout_below="@+id/search_bar1"-->
         <!-- Listview shows all available items -->
         <ListView
             android:id="@+id/catalog_list"
@@ -20,6 +23,7 @@
             android:layout_height="wrap_content"
             android:divider="@null"
             android:dividerHeight="0dp"
+            android:layout_below="@+id/search_bar1"
             ></ListView>
 
         <!-- Empty view for the list -->
@@ -75,6 +79,38 @@
             app:layout_anchorGravity="bottom|right|end"
             app:srcCompat="@android:drawable/ic_input_add" />
 
+        <!--&lt;!&ndash; Search layout &ndash;&gt;-->
+        <!--<android.support.v7.widget.CardView-->
+            <!--android:id="@+id/search_layout"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_margin="15dp"-->
+            <!--android:layout_alignParentTop="true">-->
+
+
+
+        <!--</android.support.v7.widget.CardView>-->
+        <!-- Search bar -->
+        <com.mancj.materialsearchbar.MaterialSearchBar
+            android:id="@+id/search_bar1"
+            style="@style/SearchBarTheme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:mt_speechMode="false"
+            app:mt_hint="Type to search"
+            app:mt_placeholder="Search"
+            android:layout_alignParentTop="true"
+            android:layout_margin="15dp"
+            android:padding="3dp"
+
+            app:mt_roundedSearchBarEnabled="true"
+            />
+
+
+
     </RelativeLayout>
+
+
+
 
 </RelativeLayout>

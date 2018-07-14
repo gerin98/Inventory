@@ -10,19 +10,36 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.ListViewCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.gerin.inventory.Search.CustomSuggestionsAdapter;
+import com.example.gerin.inventory.Search.RecyclerTouchListener;
+import com.example.gerin.inventory.Search.SearchAdapter;
+import com.example.gerin.inventory.Search.SearchResult;
 import com.example.gerin.inventory.data.ItemContract;
 import com.example.gerin.inventory.data.ItemDbHelper;
+import com.mancj.materialsearchbar.MaterialSearchBar;
+import com.mancj.materialsearchbar.adapter.SuggestionsAdapter;
+
+
+import java.util.ArrayList;
+import java.util.List;
 
 // TODO: 2018-07-08 add "tags" fields to the database
 public class CatalogActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -72,10 +89,239 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
      */
     private static int sort_choice = 2;
 
+
+    RecyclerView recyclerView;
+    RecyclerView.LayoutManager layoutManager;
+    SearchAdapter adapter;
+
+    MaterialSearchBar materialSearchBar;
+    CustomSuggestionsAdapter customSuggestionsAdapter;
+
+
+    // Contains all suggestions
+    List<SearchResult> searchResultList = new ArrayList<>();
+
+
+    // Instance of the database
+    ItemDbHelper database;
+
+    // Flag to determine when to stop loading suggestions
+    public int flag1 = 0;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        Log.e("catalog", "onStart");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        Log.e("catalog", "onResume");
+        flag1 = 0;
+        loadSearchResultList();
+        customSuggestionsAdapter.setSuggestions(searchResultList);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        flag1 = 1;
+        Log.e("catalog", "onPause");
+        materialSearchBar.clearSuggestions();
+        materialSearchBar.disableSearch();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_catalog);
+
+        // Create a new instance of the database for access to the searchbar
+        database = new ItemDbHelper(this);
+
+        // Create the search bar
+        materialSearchBar = (MaterialSearchBar) findViewById(R.id.search_bar1);
+        materialSearchBar.setCardViewElevation(0);
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        customSuggestionsAdapter = new CustomSuggestionsAdapter(inflater);
+
+        if (flag1 == 0) {
+            Log.e("catalog", "tried to set adapter");
+            loadSearchResultList();
+            customSuggestionsAdapter.setSuggestions(searchResultList);
+            materialSearchBar.setCustomSuggestionAdapter(customSuggestionsAdapter);
+//          ^---- this line causes problems when starting a new intent
+        }
+
+        // Add flags to determine when to stop loading search results
+        materialSearchBar.addTextChangeListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//                materialSearchBar.disableSearch();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (flag1 == 0) {
+                    List<SearchResult> newSuggestions = loadNewSearchResultList();
+                    customSuggestionsAdapter.setSuggestions(newSuggestions);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+//                if (flag1 == 0) {
+//                    if (!materialSearchBar.isSuggestionsVisible()) {
+//                        if (s.toString() != null && !s.toString().isEmpty()) {
+//                            materialSearchBar.enableSearch();
+//                        }
+//                    }
+//                }
+            }
+        });
+        // Useless
+        materialSearchBar.setOnSearchActionListener(new MaterialSearchBar.OnSearchActionListener() {
+            @Override
+            public void onSearchStateChanged(boolean enabled) {
+//                if (!enabled)
+//                    adapter = new SearchAdapter(getBaseContext(), database.getResult());
+////                    recyclerView.setAdapter(null);i
+//                if(enabled) {
+//                    materialSearchBar.enableSearch();
+//                    materialSearchBar.setCustomSuggestionAdapter(customSuggestionsAdapter);
+//                }
+//                else {
+//                    materialSearchBar.clearSuggestions();
+//                    materialSearchBar.disableSearch();
+//                }
+//                if (flag1 == 0) {
+//                    if (enabled)
+//                        materialSearchBar.showSuggestionsList();
+//                }
+
+            }
+
+            @Override
+            public void onSearchConfirmed(CharSequence text) {
+
+                List<SearchResult> testResult1 = loadNewSearchResultList();
+                if(testResult1.isEmpty()) {
+                    Toast.makeText(getBaseContext(), "No Results Found",
+                            Toast.LENGTH_LONG).show();
+                    return;
+                }
+                SearchResult testResult2 = testResult1.get(0);
+                String testResult4 = testResult2.getName();
+                int testResult3 = testResult2.getId();
+
+                if(text.toString().toLowerCase().equals(testResult4.toLowerCase())){
+//                    Toast.makeText(getBaseContext(), "Search Success!",
+//                            Toast.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(CatalogActivity.this, ItemActivity.class);
+
+                    Uri currentPetUri = ContentUris.withAppendedId(ItemContract.ItemEntry.CONTENT_URI, testResult3);
+                    // Set the URI on the data field of the intent
+                    intent.setData(currentPetUri);
+
+                    flag1 = 1;
+                    materialSearchBar.clearSuggestions();
+                    // probably dont need this line
+                    materialSearchBar.disableSearch();
+
+                    startActivity(intent);
+
+                }
+                else{
+                    Toast.makeText(getBaseContext(), "No Results Found",
+                            Toast.LENGTH_LONG).show();
+                }
+
+            }
+
+            @Override
+            public void onButtonClicked(int buttonCode) {
+
+//                recyclerView.setAdapter(null);
+
+                switch (buttonCode) {
+                    case MaterialSearchBar.BUTTON_NAVIGATION:
+                        Log.e("catalog", "button clicked");
+                        materialSearchBar.clearSuggestions();
+                        materialSearchBar.disableSearch();
+                        break;
+                    case MaterialSearchBar.BUTTON_SPEECH:
+                        break;
+                    default:
+                        break;
+
+                }
+            }
+        });
+        // Doesn't work for custom adapters
+        materialSearchBar.setSuggstionsClickListener(new SuggestionsAdapter.OnItemViewClickListener() {
+
+            @Override
+            public void OnItemClickListener(int position, View v) {
+                Log.e("catalog", "on item click");
+                Log.e("on item click", String.valueOf(position));
+            }
+
+            @Override
+            public void OnItemDeleteListener(int position, View v) {
+                Log.e("catalog", "on item delete");
+            }
+        });
+
+        // On click method for suggestions
+        RecyclerView searchrv = findViewById(R.id.mt_recycler);
+        searchrv.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), searchrv, new RecyclerTouchListener.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+
+                //id works with original search list but not new???
+//                int _id = searchResultList.get(position)._id;
+// TODO: 2018-07-13 clean up code here since we dont need _id anymore now that we have the searchResult object
+                // need testResult1 to work for some reason???
+                List<SearchResult> testResult1 = loadNewSearchResultList();
+                SearchResult testResult2 = testResult1.get(position);
+                int testResult3 = testResult2.getId();
+
+//                Log.e("catalog", "position = " + String.valueOf(position));
+//                Log.e("catalog", "_id = " + String.valueOf(_id));
+//                Log.e("catalog", "testResult3 = " + String.valueOf(testResult3));
+
+
+                Intent intent = new Intent(CatalogActivity.this, ItemActivity.class);
+
+                // Form the content URI that represents the specific pet that was clicked on,
+                // by appending the "id" (passed as input to this method) onto the
+                // {@link PetEntry#CONTENT_URI}.
+                // For example, the URI would be "content://com.example.android.pets/pets/2"
+                // if the pet with ID 2 was clicked on.
+                Uri currentPetUri = ContentUris.withAppendedId(ItemContract.ItemEntry.CONTENT_URI, testResult3);
+                // Set the URI on the data field of the intent
+                intent.setData(currentPetUri);
+
+                Log.e("catalog", "list item click");
+                flag1 = 1;
+                materialSearchBar.clearSuggestions();
+                // probably dont need this line
+                materialSearchBar.disableSearch();
+
+                startActivity(intent);
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+                TextView tv = (TextView) view.findViewById(R.id.search_text);
+                materialSearchBar.setText(String.valueOf(tv.getText()));
+            }
+        }));
 
         // Find the ListView which will be populated with the pet data
         ListView itemListView = (ListView) findViewById(R.id.catalog_list);
@@ -115,7 +361,12 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
                 Uri currentPetUri = ContentUris.withAppendedId(ItemContract.ItemEntry.CONTENT_URI, id);
                 // Set the URI on the data field of the intent
                 intent.setData(currentPetUri);
-                // Launch the {@link EditorActivity} to display the data for the current pet.
+
+                Log.e("catalog", "list item click");
+                flag1 = 1;
+                materialSearchBar.clearSuggestions();
+                materialSearchBar.disableSearch();
+
                 startActivity(intent);
             }
         });
@@ -125,13 +376,45 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 
     }
 
+    private void startSearch(String s) {
+
+//        adapter = new SearchAdapter(this, database.getResultNames(s));
+    }
+
+    private void loadSearchResultList() {
+        searchResultList = database.getResult();
+    }
+
+    private List<SearchResult> loadNewSearchResultList() {
+        MySuggestions.newSuggestions = new ArrayList<>();
+        MySuggestions.newSuggestions_id = new ArrayList<Integer>(10);
+        loadSearchResultList();
+        int i = 0;
+        for (SearchResult searchResult : searchResultList) {
+            if (searchResult.getName().toLowerCase().contains(materialSearchBar.getText().toLowerCase())) {
+                MySuggestions.newSuggestions.add(searchResult);
+                MySuggestions.newSuggestions_id.add(searchResult.getId());
+                MySuggestions.moreresults[i] = searchResult.getId();
+                i++;
+
+//                MySuggestions.newSuggestions_id.add(1);
+                Log.d("_id", String.valueOf(searchResult.getId()));
+            }
+        }
+
+        return MySuggestions.newSuggestions;
+
+    }
+
     /* Methods to create menu */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu options from the res/menu/menu_catalog.xml file.
         // This adds menu items to the app bar.
         getMenuInflater().inflate(R.menu.menu_catalog, menu);
+
         return true;
+
     }
 
     @Override
@@ -141,7 +424,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
             // Respond to a click on the "Delete all entries" menu option
             case R.id.action_delete_all_entries:
                 // delete entries
-               showDeleteAllConfirmationDialog();
+                showDeleteAllConfirmationDialog();
                 return true;
             case R.id.action_sort_all_entries:
                 // sort entries
@@ -217,11 +500,11 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         // Sort order
         switch (choice) {
             case ASCENDING:
-                DEFAULT_SORT_ORDER = ItemContract.ItemEntry.COLUMN_ITEM_NAME + " ASC";
+                DEFAULT_SORT_ORDER = ItemContract.ItemEntry.COLUMN_ITEM_NAME + " COLLATE NOCASE ASC";
                 sort_choice = 0;
                 break;
             case DESCENDING:
-                DEFAULT_SORT_ORDER = ItemContract.ItemEntry.COLUMN_ITEM_NAME + " DESC";
+                DEFAULT_SORT_ORDER = ItemContract.ItemEntry.COLUMN_ITEM_NAME + " COLLATE NOCASE DESC";
                 sort_choice = 1;
                 break;
             case OLDEST_FIRST:
