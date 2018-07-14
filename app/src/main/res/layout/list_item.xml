@@ -21,14 +21,14 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="@dimen/activity_margin"
-            android:weightSum="2">
+            android:weightSum="100">
 
             <!-- first child is the product name -->
             <TextView
                 android:id="@+id/name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="58"
                 android:fontFamily="sans-serif-medium"
                 android:textAppearance="?android:textAppearanceMedium"
                 android:textColor="#2B3D4D" />
@@ -37,7 +37,7 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="42"
                 android:orientation="vertical">
 
                 <!-- quantity text -->
