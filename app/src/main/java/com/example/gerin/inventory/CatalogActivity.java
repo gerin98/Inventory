@@ -25,9 +25,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.gerin.inventory.Search.CustomSuggestionsAdapter;
+import com.example.gerin.inventory.Search.RecyclerTouchListener;
 import com.example.gerin.inventory.Search.SearchAdapter;
 import com.example.gerin.inventory.Search.SearchResult;
 import com.example.gerin.inventory.data.ItemContract;
@@ -95,11 +97,15 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
     MaterialSearchBar materialSearchBar;
     CustomSuggestionsAdapter customSuggestionsAdapter;
 
-    List<String> suggestList = new ArrayList<>();
+
+    // Contains all suggestions
     List<SearchResult> searchResultList = new ArrayList<>();
 
+
+    // Instance of the database
     ItemDbHelper database;
 
+    // Flag to determine when to stop loading suggestions
     public int flag1 = 0;
 
     @Override
@@ -107,8 +113,6 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         super.onStart();
 
         Log.e("catalog", "onStart");
-//        materialSearchBar.clearSuggestions();
-//        materialSearchBar.disableSearch();
     }
 
     @Override
@@ -119,8 +123,6 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         flag1 = 0;
         loadSearchResultList();
         customSuggestionsAdapter.setSuggestions(searchResultList);
-//        materialSearchBar.clearSuggestions();
-//        materialSearchBar.disableSearch();
     }
 
     @Override
@@ -143,8 +145,6 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 
         // Create the search bar
         materialSearchBar = (MaterialSearchBar) findViewById(R.id.search_bar1);
-//        materialSearchBar.setCardViewElevation(64);
-//        materialSearchBar.setMenuDividerEnabled(false);
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         customSuggestionsAdapter = new CustomSuggestionsAdapter(inflater);
 
@@ -164,13 +164,10 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                materialSearchBar.enableSearch();
                 if (flag1 == 0) {
                     List<SearchResult> newSuggestions = loadNewSearchResultList();
                     customSuggestionsAdapter.setSuggestions(newSuggestions);
-//                    materialSearchBar.setCustomSuggestionAdapter(customSuggestionsAdapter);
                 }
-
             }
 
             @Override
@@ -222,16 +219,62 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
             }
         });
         materialSearchBar.setSuggstionsClickListener(new SuggestionsAdapter.OnItemViewClickListener() {
+
             @Override
             public void OnItemClickListener(int position, View v) {
-
+                Log.e("catalog","on item click");
+                Log.e("on item click", String.valueOf(position));
             }
 
             @Override
             public void OnItemDeleteListener(int position, View v) {
-
+                Log.e("catalog","on item delete");
             }
         });
+
+        // On click method for suggestions
+        RecyclerView searchrv = findViewById(R.id.mt_recycler);
+        searchrv.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), searchrv, new RecyclerTouchListener.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+
+                //id works with original search list but not new???
+//                int _id = searchResultList.get(position)._id;
+
+                List<SearchResult> testResult1 = loadNewSearchResultList();
+                SearchResult testResult2 = testResult1.get(position);
+                int testResult3 = testResult2.getId();
+
+//                Log.e("catalog", "position = " + String.valueOf(position));
+//                Log.e("catalog", "_id = " + String.valueOf(_id));
+//                Log.e("catalog", "testResult3 = " + String.valueOf(testResult3));
+
+
+                Intent intent = new Intent(CatalogActivity.this, ItemActivity.class);
+
+                // Form the content URI that represents the specific pet that was clicked on,
+                // by appending the "id" (passed as input to this method) onto the
+                // {@link PetEntry#CONTENT_URI}.
+                // For example, the URI would be "content://com.example.android.pets/pets/2"
+                // if the pet with ID 2 was clicked on.
+                Uri currentPetUri = ContentUris.withAppendedId(ItemContract.ItemEntry.CONTENT_URI, testResult3);
+                // Set the URI on the data field of the intent
+                intent.setData(currentPetUri);
+
+                Log.e("catalog", "list item click");
+                flag1 = 1;
+                materialSearchBar.clearSuggestions();
+                materialSearchBar.disableSearch();
+
+                startActivity(intent);
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+                TextView tv = (TextView) view.findViewById(R.id.search_text);
+                materialSearchBar.setText(String.valueOf(tv.getText()));
+            }
+        }));
 
         // Find the ListView which will be populated with the pet data
         ListView itemListView = (ListView) findViewById(R.id.catalog_list);
@@ -288,7 +331,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 
     private void startSearch(String s) {
 
-        adapter = new SearchAdapter(this, database.getResultNames(s));
+//        adapter = new SearchAdapter(this, database.getResultNames(s));
     }
 
     private void loadSearchResultList() {
@@ -296,15 +339,23 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
     }
 
     private List<SearchResult> loadNewSearchResultList() {
-        List<SearchResult> newSuggestions = new ArrayList<>();
+        MySuggestions.newSuggestions = new ArrayList<>();
+        MySuggestions.newSuggestions_id = new ArrayList<Integer>(10);
         loadSearchResultList();
+        int i = 0;
         for (SearchResult searchResult : searchResultList) {
             if (searchResult.getName().toLowerCase().contains(materialSearchBar.getText().toLowerCase())) {
-                newSuggestions.add(searchResult);
+                MySuggestions.newSuggestions.add(searchResult);
+                MySuggestions.newSuggestions_id.add(searchResult.getId());
+                MySuggestions.moreresults[i] = searchResult.getId();
+                i++;
+
+//                MySuggestions.newSuggestions_id.add(1);
+                Log.d("_id",String.valueOf(searchResult.getId()));
             }
         }
 
-        return newSuggestions;
+        return MySuggestions.newSuggestions;
 
     }
 
