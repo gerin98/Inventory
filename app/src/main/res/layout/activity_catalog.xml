@@ -6,7 +6,8 @@
     xmlns:card_view="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CatalogActivity">
+    tools:context=".CatalogActivity"
+    android:background="@color/white_smoke">
 
 
     <!-- This layout contains all the views -->
@@ -100,6 +101,8 @@
             app:mt_placeholder="Search"
             android:layout_alignParentTop="true"
             android:layout_margin="15dp"
+            android:padding="3dp"
+
             app:mt_roundedSearchBarEnabled="true"
             />
 
