@@ -145,6 +145,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 
         // Create the search bar
         materialSearchBar = (MaterialSearchBar) findViewById(R.id.search_bar1);
+        materialSearchBar.setCardViewElevation(0);
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         customSuggestionsAdapter = new CustomSuggestionsAdapter(inflater);
 
@@ -156,6 +157,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 //          ^---- this line causes problems when starting a new intent
         }
 
+        // Add flags to determine when to stop loading search results
         materialSearchBar.addTextChangeListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -175,6 +177,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 
             }
         });
+        // Useless
         materialSearchBar.setOnSearchActionListener(new MaterialSearchBar.OnSearchActionListener() {
             @Override
             public void onSearchStateChanged(boolean enabled) {
@@ -218,6 +221,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
                 }
             }
         });
+        // Doesn't work for custom adapters
         materialSearchBar.setSuggstionsClickListener(new SuggestionsAdapter.OnItemViewClickListener() {
 
             @Override
@@ -240,7 +244,8 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 
                 //id works with original search list but not new???
 //                int _id = searchResultList.get(position)._id;
-
+// TODO: 2018-07-13 clean up code here since we dont need _id anymore now that we have the searchResult object
+                // need testResult1 to work for some reason???
                 List<SearchResult> testResult1 = loadNewSearchResultList();
                 SearchResult testResult2 = testResult1.get(position);
                 int testResult3 = testResult2.getId();
@@ -264,6 +269,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
                 Log.e("catalog", "list item click");
                 flag1 = 1;
                 materialSearchBar.clearSuggestions();
+                // probably dont need this line
                 materialSearchBar.disableSearch();
 
                 startActivity(intent);
@@ -453,7 +459,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         // Sort order
         switch (choice) {
             case ASCENDING:
-                DEFAULT_SORT_ORDER = ItemContract.ItemEntry.COLUMN_ITEM_NAME + " COLLATE NOCASE ASC"; 
+                DEFAULT_SORT_ORDER = ItemContract.ItemEntry.COLUMN_ITEM_NAME + " COLLATE NOCASE ASC";
                 sort_choice = 0;
                 break;
             case DESCENDING:

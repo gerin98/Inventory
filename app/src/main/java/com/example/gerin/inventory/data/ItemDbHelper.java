@@ -80,13 +80,16 @@ public class ItemDbHelper extends SQLiteOpenHelper{
     // Function to get the search results
     public List<SearchResult> getResult(){
 
+        // need to get all results but show only 5 somehow ...
+        String sortOrder = "ROWID LIMIT 5";
+
         String[] projection = {
                 ItemContract.ItemEntry._ID,
                 ItemContract.ItemEntry.COLUMN_ITEM_NAME,
                 ItemContract.ItemEntry.COLUMN_ITEM_QUANTITY,
                 ItemContract.ItemEntry.COLUMN_ITEM_PRICE};
 
-        Cursor cursor = context.getContentResolver().query(ItemEntry.CONTENT_URI, projection, null, null,null);
+        Cursor cursor = context.getContentResolver().query(ItemEntry.CONTENT_URI, projection, null, null, null);
 
         List<SearchResult> searchResults = new ArrayList<>();
         if(cursor.moveToFirst()){
@@ -104,7 +107,9 @@ public class ItemDbHelper extends SQLiteOpenHelper{
         return searchResults;
     }
 
-    public List<String> getName(){
+    // added an 's' after getName
+    // dont really need these 2 methods
+    public List<String> getNames(){
 
         String[] projection = {
                 ItemContract.ItemEntry.COLUMN_ITEM_NAME};
