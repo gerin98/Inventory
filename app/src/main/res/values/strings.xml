@@ -9,7 +9,7 @@
     <string name="hint_item_name">Name</string>
     <string name="hint_item_quantity">Quantity</string>
     <string name="action_save">Save</string>
-    <string name="hint_item_price">Price</string>
+    <string name="hint_item_price">$ Price</string>
     <string name="category_description">Description</string>
     <string name="hint_item_description">Describe the product</string>
     <string name="dollarSign">$</string>
