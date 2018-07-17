@@ -35,7 +35,7 @@ Welcome to Inventory, a simple Android application to manage your inventory! Add
  
  ## Downloading
  
- Check latest release to download the apk file.
+ Check latest release to download the apk file.  
  https://github.com/gerin98/inventory/releases/tag/3.0.1
  
  ## Resources
