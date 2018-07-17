@@ -15,6 +15,7 @@ Welcome to Inventory, a simple Android application to manage your inventory! Add
 - Database storage
 - Material Design
 - Customizable data entries
+- Data sorting
 
 
 ## Dependencies
