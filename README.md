@@ -19,6 +19,7 @@ Welcome to Inventory, a simple Android application to manage your inventory! Add
 
 ## Dependencies
 
+'org.apmem.tools:layouts:1.10@aar'
 'com.android.support:recyclerview-v7:27.1.1'  
 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'  
 'com.github.mancj:MaterialSearchBar:0.7.6'  
