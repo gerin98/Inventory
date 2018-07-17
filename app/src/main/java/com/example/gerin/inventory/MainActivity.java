@@ -1,6 +1,7 @@
 package com.example.gerin.inventory;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
     private static int SPLASH_TIME_OUT = 4000;
+    public static final String MY_PREFS_NAME = "MyPrefsFile";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +24,10 @@ public class MainActivity extends AppCompatActivity {
         ImageView logo = (ImageView) findViewById(R.id.splash_screen_logo);
         TextView name = (TextView) findViewById(R.id.splash_screen_name);
 
+
+        SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+        editor.putBoolean("firstTime", false);
+        editor.apply();
 
         //  create animations from resources
         Animation fromBottom = AnimationUtils.loadAnimation(this,R.anim.from_bottom);
