@@ -10,6 +10,7 @@ Welcome to Inventory, a simple Android application to manage your inventory! Add
 
 <img src="onboarding_images/37210379_918918334959800_6113687634331041792_n.jpg" width="280"> <img src="onboarding_images/37256248_918918324959801_4080165875468992512_n.jpg" width="280"> <img src="onboarding_images/37224907_918918291626471_5005394821364318208_n.jpg" width="280">
 
+## Features
 
 
 ## Dependencies
@@ -27,6 +28,10 @@ Welcome to Inventory, a simple Android application to manage your inventory! Add
  ## Database
  
  This application uses SQLite3 database.
+ 
+ ## Resources
+ 
+ 
  
  # License
  
