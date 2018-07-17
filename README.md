@@ -24,6 +24,10 @@ Welcome to Inventory, a simple Android application to manage your inventory! Add
  - minSdkVersion 21
  - targetSdkVersion 27
  
+ ## Database
+ 
+ This application uses SQLite3 database.
+ 
  # License
  
  ```
