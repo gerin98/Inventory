@@ -1,5 +1,7 @@
 # Inventory for Android
 
+<img src="onboarding_images/Web 1366 – 1@3x.png" >
+
 ## Description
 
 Welcome to Inventory, a simple Android application to manage your inventory! Add items to your inventory to view them in your catalogue. Click on an item or search for it in the search bar to get additional information and edit it. Sort your catalogue to find items at a glance. Feel free to delete any item any time.  
