@@ -11,7 +11,8 @@ Welcome to Inventory, a simple Android application to manage your inventory! Add
  Make use of the powerful search bar to search for any item by name. Search suggestions help predict your search so you dont have to type out the whole name. Simply click on an item or press the search button to receive detailed product infromation about the item.
 - Database storage
 - Material Design
-- Customizable data entries
+- **Customizable data entries**  
+  Add and edit items at any time. Fill in as much information as necessary such as name, price, quantity and even a product description. Add relevant tags to your products as you see fit. 
 - **Data sorting**  
   Use the sort button to change how you want to view your database. Sort items alphabetically or by their order of addition into the database.
 
