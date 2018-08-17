@@ -27,6 +27,7 @@ Welcome to Inventory, a simple Android application to manage your inventory! Add
 - Search by tags
 - Sort by price
 - Revenue calculator
+- Different colour themes
 
 ## Dependencies
 
