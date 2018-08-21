@@ -33,4 +33,5 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:27.1.1'
     implementation 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
     implementation 'com.github.mancj:MaterialSearchBar:0.7.6'
+    implementation 'com.codemybrainsout.onboarding:onboarder:1.0.4'
 }

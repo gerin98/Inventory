@@ -36,6 +36,9 @@
             android:authorities="com.example.gerin.inventory"
             android:exported="false" />
 
+        <activity android:name=".YourActivity">
+
+        </activity>
     </application>
 
 </manifest>
